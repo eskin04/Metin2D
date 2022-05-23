@@ -6,14 +6,16 @@ public class EnemyMove : MonoBehaviour
 {
     [SerializeField] Rigidbody2D rb;
     [SerializeField] float maxDistance;
-    public float speed;
     [SerializeField] bool isRightDirection = true;
+    Enemy enemy;
     int rightDirection;
     public int direction;
 
     // Start is called before the first frame update
     void Start()
     {
+        enemy = GetComponent<Enemy>();
+
         if (isRightDirection)
         {
             rightDirection = 1;
@@ -31,7 +33,7 @@ public class EnemyMove : MonoBehaviour
     void Update()
     {
         Physics2D.queriesStartInColliders = false;
-        rb.velocity = new Vector2(direction * speed, rb.velocity.y);
+        rb.velocity = new Vector2(direction * enemy.enemiesSpeed, rb.velocity.y);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right * rightDirection, 10f, LayerMask.GetMask("Ground"));
         Debug.DrawRay(transform.position, Vector2.right * maxDistance * rightDirection, Color.red);
         if (hit.collider != null)

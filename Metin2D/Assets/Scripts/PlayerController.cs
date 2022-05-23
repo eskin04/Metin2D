@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     int health = 5;
     bool isGrounded = true;
     float nextAttackTime;
+    bool isKnockBack;
 
 
     // Start is called before the first frame update
@@ -23,11 +24,15 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         anim.SetFloat("AirSpeed", rb.velocity.y);
         float horizontalInput = Input.GetAxis("Horizontal");
-        Move(horizontalInput);
+        if (!isKnockBack)
+        {
+            Move(horizontalInput);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             Jump();
@@ -56,6 +61,10 @@ public class PlayerController : MonoBehaviour
         {
             enemy.GetComponent<Enemy>().TakeDamage(1);
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
     void Move(float horizontalInput)
     {
@@ -90,6 +99,20 @@ public class PlayerController : MonoBehaviour
     {
         health += add;
     }
+    void KnockBack(Vector3 enemyPos)
+    {
+        isKnockBack = true;
+        Vector2 knockBackDir = transform.position - enemyPos;
+        knockBackDir.Normalize();
+        rb.AddForce(knockBackDir * 5, ForceMode2D.Impulse);
+        StartCoroutine(KnockBackTimer());
+
+    }
+    IEnumerator KnockBackTimer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isKnockBack = false;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -101,6 +124,13 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetTrigger("Hurt");
             UpdateHealth(-1);
+            KnockBack(collision.transform.position);
+        }
+        if (collision.gameObject.tag == "Laser")
+        {
+            anim.SetTrigger("Hurt");
+            UpdateHealth(-2);
+            KnockBack(collision.transform.position);
         }
     }
     private void OnCollisionExit2D(Collision2D other)

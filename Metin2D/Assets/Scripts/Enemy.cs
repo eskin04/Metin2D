@@ -5,24 +5,28 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] float health;
-    [SerializeField] EnemyMove enemyMove;
     [SerializeField] GameObject coinPrefab;
-    float speed;
+    public float enemiesSpeed;
+    float firstSpeed;
+    private void Start()
+    {
+        firstSpeed = enemiesSpeed;
+    }
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        speed = enemyMove.speed;
-        enemyMove.speed = -enemyMove.speed * 3;
-        StartCoroutine(ResetSpeed());
         Debug.Log("hit");
+        health -= damage;
+        enemiesSpeed = -enemiesSpeed * 1.5f;
+        StartCoroutine(ResetSpeed());
+
     }
     IEnumerator ResetSpeed()
     {
-        yield return new WaitForSeconds(.08f);
-        enemyMove.speed = 0;
         yield return new WaitForSeconds(.25f);
-        enemyMove.speed = speed;
+        enemiesSpeed = 0;
+        yield return new WaitForSeconds(.25f);
+        enemiesSpeed = firstSpeed;
     }
     private void Update()
     {
@@ -36,6 +40,14 @@ public class Enemy : MonoBehaviour
         Vector2 coinPos = new Vector2(transform.position.x, transform.position.y + 1);
         Instantiate(coinPrefab, coinPos, Quaternion.identity);
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            TakeDamage(0);
+        }
     }
 
 }
