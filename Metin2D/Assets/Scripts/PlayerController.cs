@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform attackPos;
     [SerializeField] float attackRange;
     [SerializeField] float speed;
+    [SerializeField] float dashForce;
     [SerializeField] float jumpForce;
     [SerializeField] float attackRate;
     [SerializeField] Animator anim;
@@ -15,28 +16,31 @@ public class PlayerController : MonoBehaviour
     bool isGrounded = true;
     float nextAttackTime;
     bool isKnockBack;
+    bool isDash;
+    bool dashCoolDown;
+    int isLookRight = 1;
+    float firstGravityScale;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        firstGravityScale = rb.gravityScale;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         anim.SetFloat("AirSpeed", rb.velocity.y);
         float horizontalInput = Input.GetAxis("Horizontal");
-        if (!isKnockBack)
+        if (!isKnockBack && !isDash)
         {
             Move(horizontalInput);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isDash)
         {
             Jump();
-
         }
         if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
         {
@@ -46,7 +50,29 @@ public class PlayerController : MonoBehaviour
         {
             GameOver();
         }
+        if (Input.GetMouseButtonDown(1) && !dashCoolDown)
+        {
+            dashCoolDown = true;
+            Dash();
+        }
 
+    }
+    void Dash()
+    {
+        isDash = true;
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(Vector2.right * isLookRight * dashForce, ForceMode2D.Impulse);
+        StartCoroutine(DashWait());
+    }
+    IEnumerator DashWait()
+    {
+        yield return new WaitForSeconds(.1f);
+        rb.velocity = Vector2.zero;
+        rb.gravityScale = firstGravityScale;
+        isDash = false;
+        yield return new WaitForSeconds(.4f);
+        dashCoolDown = false;
     }
     void GameOver()
     {
@@ -81,16 +107,17 @@ public class PlayerController : MonoBehaviour
         if (horizontalInput < 0)
         {
             transform.localScale = new Vector3(1.5f, 1.5f, 1);
+            isLookRight = -1;
         }
         else if (horizontalInput > 0)
         {
             transform.localScale = new Vector3(-1.5f, 1.5f, 1);
+            isLookRight = 1;
         }
     }
     void Jump()
     {
         isGrounded = false;
-
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         anim.SetTrigger("Jump");
     }
