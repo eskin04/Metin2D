@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float attackRate;
     [SerializeField] Animator anim;
+    [SerializeField] Vector3 localScale;
+    [SerializeField] Vector3 reverseScale;
+    BoxCollider2D boxCollider;
     int health = 5;
     bool isGrounded = true;
     float nextAttackTime;
@@ -26,6 +29,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         firstGravityScale = rb.gravityScale;
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -67,7 +71,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator DashWait()
     {
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.2f);
         rb.velocity = Vector2.zero;
         rb.gravityScale = firstGravityScale;
         isDash = false;
@@ -87,6 +91,12 @@ public class PlayerController : MonoBehaviour
         {
             enemy.GetComponent<Enemy>().TakeDamage(1);
         }
+        Collider2D boss = Physics2D.OverlapCircle(attackPos.position, attackRange, LayerMask.GetMask("Boss"));
+        if (boss != null)
+        {
+            boss.GetComponent<BossController>().TakeDamage(1);
+        }
+
     }
     private void OnDrawGizmos()
     {
@@ -106,12 +116,12 @@ public class PlayerController : MonoBehaviour
         }
         if (horizontalInput < 0)
         {
-            transform.localScale = new Vector3(1.5f, 1.5f, 1);
+            transform.localScale = localScale;
             isLookRight = -1;
         }
         else if (horizontalInput > 0)
         {
-            transform.localScale = new Vector3(-1.5f, 1.5f, 1);
+            transform.localScale = reverseScale;
             isLookRight = 1;
         }
     }
@@ -126,19 +136,23 @@ public class PlayerController : MonoBehaviour
     {
         health += add;
     }
-    void KnockBack(Vector3 enemyPos)
+    void KnockBack(Vector3 enemyPos, GameObject enemy)
     {
         isKnockBack = true;
+        anim.SetTrigger("Hurt");
         Vector2 knockBackDir = transform.position - enemyPos;
         knockBackDir.Normalize();
         rb.AddForce(knockBackDir * 5, ForceMode2D.Impulse);
-        StartCoroutine(KnockBackTimer());
+        Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>());
+        StartCoroutine(KnockBackTimer(enemy));
 
     }
-    IEnumerator KnockBackTimer()
+    IEnumerator KnockBackTimer(GameObject enemy)
     {
         yield return new WaitForSeconds(0.5f);
         isKnockBack = false;
+        Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>(), false);
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -149,15 +163,23 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.tag == "Enemy")
         {
-            anim.SetTrigger("Hurt");
             UpdateHealth(-1);
-            KnockBack(collision.transform.position);
+            KnockBack(collision.transform.position, collision.gameObject);
         }
         if (collision.gameObject.tag == "Laser")
         {
-            anim.SetTrigger("Hurt");
             UpdateHealth(-2);
-            KnockBack(collision.transform.position);
+            KnockBack(collision.transform.position, collision.gameObject);
+        }
+        if (collision.gameObject.tag == "Bullet")
+        {
+            UpdateHealth(-1);
+            KnockBack(collision.transform.position, collision.gameObject);
+        }
+        if (collision.gameObject.tag == "Boss")
+        {
+            UpdateHealth(-2);
+            KnockBack(collision.transform.position, collision.gameObject);
         }
     }
     private void OnCollisionExit2D(Collision2D other)
