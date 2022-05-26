@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,8 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
+    [SerializeField] HealthBar healthBar;
     BoxCollider2D boxCollider;
-    int health = 5;
+    int health = 7;
     bool isGrounded = true;
     float nextAttackTime;
     bool isKnockBack;
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         firstGravityScale = rb.gravityScale;
         boxCollider = GetComponent<BoxCollider2D>();
+        healthBar.SetMaxHealth(health);
     }
 
     // Update is called once per frame
@@ -80,7 +83,7 @@ public class PlayerController : MonoBehaviour
     }
     void GameOver()
     {
-        Debug.Log("Game Over");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     void Attack()
     {
@@ -135,6 +138,7 @@ public class PlayerController : MonoBehaviour
     void UpdateHealth(int add)
     {
         health += add;
+        healthBar.SetHealth(health);
     }
     void KnockBack(Vector3 enemyPos, GameObject enemy)
     {
@@ -142,7 +146,7 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Hurt");
         Vector2 knockBackDir = transform.position - enemyPos;
         knockBackDir.Normalize();
-        rb.AddForce(knockBackDir * 5, ForceMode2D.Impulse);
+        rb.AddForce(knockBackDir * 3, ForceMode2D.Impulse);
         Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>());
         StartCoroutine(KnockBackTimer(enemy));
 
@@ -151,7 +155,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         isKnockBack = false;
-        Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>(), false);
+        yield return new WaitForSeconds(.5f);
+        if(enemy!=null)
+        {
+            Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>(), false);
+        }
 
     }
     private void OnCollisionEnter2D(Collision2D collision)

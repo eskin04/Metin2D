@@ -15,6 +15,7 @@ public class BossController : MonoBehaviour
     [SerializeField] float dashForce;
     [SerializeField] float health;
     [SerializeField] GameObject bullet;
+    [SerializeField] HealthBar healthBar;
     SpriteRenderer spriteRenderer;
     Vector2 direction;
     float time;
@@ -29,7 +30,8 @@ public class BossController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         localScaleX = transform.localScale.x;
         direction = (player.transform.position - bossGround.position).normalized;
-        time = 2;
+        time = Time.time  + 2;
+        healthBar.SetMaxHealth(health);
     }
 
     // Update is called once per frame
@@ -43,19 +45,20 @@ public class BossController : MonoBehaviour
             {
                 random = Random.Range(0, 3);
             }
+            rb.velocity = Vector2.zero;
             switch (attacks[random])
             {
                 case "jumpAttack":
-                    JumpAttack();
+                    StartCoroutine(WaitJump());
                     break;
                 case "dashAttack":
-                    DashAttack();
+                    StartCoroutine(WaitDash());
                     break;
                 case "shootAttack":
-                    ShootAttack();
+                    StartCoroutine(WaitShoot());
                     break;
             }
-            time = Time.time + 3;
+            time = Time.time + 3.5f;
             prevRandom = random;
         }
         if (health <= 0)
@@ -66,18 +69,32 @@ public class BossController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        spriteRenderer.color = Color.red;
-        StartCoroutine(ResetColor());
-
+        healthBar.SetHealth(health);
     }
     IEnumerator ResetColor()
     {
         yield return new WaitForSeconds(.1f);
         spriteRenderer.color = Color.white;
     }
+    IEnumerator WaitJump(){
+        spriteRenderer.color = Color.blue;
+        yield return new WaitForSeconds(.6f);
+        JumpAttack();
+    }
+    IEnumerator WaitDash(){
+        spriteRenderer.color = Color.green;
+        yield return new WaitForSeconds(.6f);
+        DashAttack();
+    }
+    IEnumerator WaitShoot(){
+        spriteRenderer.color = Color.yellow;
+        yield return new WaitForSeconds(.6f);
+        ShootAttack();
+    }
 
     void JumpAttack()
     {
+        StartCoroutine(ResetColor());
         ChangeDirection();
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
@@ -85,12 +102,11 @@ public class BossController : MonoBehaviour
     }
     IEnumerator Attack()
     {
+
         yield return new WaitForSeconds(waitTime);
         rb.velocity = direction * attackForce;
         yield return new WaitForSeconds(waitTime);
         BackForce();
-        yield return new WaitForSeconds(.5f);
-        rb.velocity = Vector2.zero;
     }
     void BackForce()
     {
@@ -99,12 +115,14 @@ public class BossController : MonoBehaviour
     }
     void ShootAttack()
     {
+        StartCoroutine(ResetColor());
         ChangeDirection();
-        Instantiate(bullet, shootPoint.position, Quaternion.identity);
+        Instantiate(bullet, shootPoint.position, transform.rotation);
 
     }
     void DashAttack()
     {
+        StartCoroutine(ResetColor());
         ChangeDirection();
         rb.AddForce(Vector2.right * direction * dashForce, ForceMode2D.Impulse);
         StartCoroutine(DAttack());
@@ -116,18 +134,16 @@ public class BossController : MonoBehaviour
         ChangeDirection();
         yield return new WaitForSeconds(waitTime);
         BackForce();
-        yield return new WaitForSeconds(.5f);
-        rb.velocity = Vector2.zero;
     }
     void ChangeDirection()
     {
         if (direction.x > 0)
         {
-            transform.localScale = new Vector2(-localScaleX, transform.localScale.y);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
         }
         else if (direction.x < 0)
         {
-            transform.localScale = new Vector2(localScaleX, transform.localScale.y);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
     private void OnCollisionEnter2D(Collision2D other)
@@ -137,6 +153,10 @@ public class BossController : MonoBehaviour
             rb.velocity = Vector2.zero;
             ChangeDirection();
 
+        }
+        if(other.gameObject.tag =="Wall"){
+            rb.velocity = new Vector2(0,-15f);
+            ChangeDirection();
         }
     }
 }

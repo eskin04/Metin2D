@@ -19,11 +19,12 @@ public class BulletMove : MonoBehaviour
     }
     IEnumerator TimeUp()
     {
-        yield return new WaitForSeconds(.6f);
-        rb.velocity = Vector2.zero;
+        yield return new WaitForSeconds(.7f);
         isStop = true;
         yield return new WaitForSeconds(.5f);
         isTimeUp = true;
+        yield return new WaitForSeconds(.7f);
+        Destroy(gameObject);
 
 
     }
@@ -33,11 +34,11 @@ public class BulletMove : MonoBehaviour
     {
         if (!isStop)
         {
-            rb.velocity = new Vector2(direction.x * speed, 0);
+            transform.Translate(Vector2.left * speed * Time.deltaTime);
         }
         else if (isTimeUp && isStop)
         {
-            rb.velocity = new Vector2(-direction.x * speed, 0);
+            transform.Translate(Vector2.right * Time.deltaTime * speed);
         }
     }
 
@@ -46,6 +47,10 @@ public class BulletMove : MonoBehaviour
         if (other.gameObject.tag == "Destroy")
         {
             Destroy(gameObject);
+        }
+        if( other.gameObject.tag =="Wall")
+        {
+            isStop = true;
         }
     }
 }
