@@ -203,6 +203,9 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
+        if(other.gameObject.name == "Boss Scene Trigger"){
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
 }
