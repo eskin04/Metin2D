@@ -60,6 +60,7 @@ public class BossController : MonoBehaviour
             }
             time = Time.time + 3.5f;
             prevRandom = random;
+            
         }
         if (health <= 0)
         {
@@ -159,4 +160,5 @@ public class BossController : MonoBehaviour
             ChangeDirection();
         }
     }
+
 }

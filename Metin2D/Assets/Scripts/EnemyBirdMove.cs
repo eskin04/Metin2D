@@ -8,6 +8,7 @@ public class EnemyBirdMove : MonoBehaviour
     [SerializeField] GameObject playerHead;
     Enemy enemy;
     [SerializeField] Rigidbody2D rb;
+    Vector2 direction;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,13 +21,22 @@ public class EnemyBirdMove : MonoBehaviour
         Collider2D player = Physics2D.OverlapCircle(transform.position, attackRange, LayerMask.GetMask("Player"));
         if (player != null)
         {
-            Vector2 direction = playerHead.transform.position - transform.position;
+            direction = playerHead.transform.position - transform.position;
             direction.Normalize();
             rb.velocity = direction * enemy.enemiesSpeed;
         }
         else
         {
             rb.velocity = Vector2.zero;
+        }
+
+        if(direction.x>0)
+        {
+            transform.localScale = new Vector3(-1,1,1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1,1,1);
         }
 
     }

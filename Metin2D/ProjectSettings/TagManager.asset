@@ -12,6 +12,7 @@ TagManager:
   - Bullet
   - Destroy
   - Wall
+  - Bomb
   layers:
   - Default
   - TransparentFX

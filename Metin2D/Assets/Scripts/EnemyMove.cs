@@ -45,6 +45,7 @@ public class EnemyMove : MonoBehaviour
         if (hitGround != null && Time.time >= time)
         {
             direction *= -1;
+            transform.localScale=new Vector3(transform.localScale.x*-1,1,1);
             time = Time.time + coolDown;
         }
 

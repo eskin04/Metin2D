@@ -135,12 +135,12 @@ public class PlayerController : MonoBehaviour
         anim.SetTrigger("Jump");
     }
 
-    void UpdateHealth(int add)
+    public void UpdateHealth(int add)
     {
         health += add;
         healthBar.SetHealth(health);
     }
-    void KnockBack(Vector3 enemyPos, GameObject enemy)
+    public void KnockBack(Vector3 enemyPos, GameObject enemy)
     {
         isKnockBack = true;
         anim.SetTrigger("Hurt");
@@ -205,7 +205,10 @@ public class PlayerController : MonoBehaviour
         }
         if(other.gameObject.name == "Boss Scene Trigger"){
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            
         }
+
     }
+
 
 }
