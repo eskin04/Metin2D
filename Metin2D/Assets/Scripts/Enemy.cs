@@ -6,11 +6,15 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] float health;
     [SerializeField] GameObject coinPrefab;
+    [SerializeField] GameObject deathPrefab;
     public float enemiesSpeed;
     float firstSpeed;
+    bool isDead;
+    SpriteRenderer sprite;
     private void Start()
     {
         firstSpeed = enemiesSpeed;
+        sprite=GetComponent<SpriteRenderer>();
     }
 
     public void TakeDamage(float damage)
@@ -30,14 +34,23 @@ public class Enemy : MonoBehaviour
     }
     private void Update()
     {
-        if (health <= 0)
+        if (health <= 0 && !isDead)
         {
             KillEnemy();
         }
     }
     private void KillEnemy()
     {
+        isDead=true;
         Vector2 coinPos = new Vector2(transform.position.x, transform.position.y + 1);
+        sprite.enabled=false;
+        GameObject deathClone=Instantiate(deathPrefab, transform.position, Quaternion.identity);
+        StartCoroutine(SpawnCoin(coinPos,deathClone));
+    }
+    IEnumerator SpawnCoin(Vector2 coinPos,GameObject deathClone)
+    {
+        yield return new WaitForSeconds(.25f);
+        Destroy(deathClone);
         Instantiate(coinPrefab, coinPos, Quaternion.identity);
         Destroy(gameObject);
     }

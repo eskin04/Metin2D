@@ -8,6 +8,7 @@ public class JumpEnemyMove : MonoBehaviour
     [SerializeField] float attackRange;
     [SerializeField] float jumpForce;
     [SerializeField] GameObject playerHead;
+    Animator anim;
     Enemy enemy;
     bool isGround = true;
 
@@ -16,6 +17,7 @@ public class JumpEnemyMove : MonoBehaviour
     void Start()
     {
         enemy = GetComponent<Enemy>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -27,6 +29,7 @@ public class JumpEnemyMove : MonoBehaviour
             if (isGround)
             {
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                anim.SetTrigger("isPlayer");
                 isGround = false;
             }
         }
