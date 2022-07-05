@@ -13,6 +13,7 @@ TagManager:
   - Destroy
   - Wall
   - Bomb
+  - Ladder
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Player
   - Bullet
   - Boss
-  - 
+  - Chest
   - 
   - 
   - 
@@ -47,6 +48,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Ground
+    uniqueID: 969791133
+    locked: 0
+  - name: Ladder
+    uniqueID: 3045052019
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

@@ -7,6 +7,7 @@ public class PistolRotation : MonoBehaviour
     [SerializeField] Transform playerPos;
     [SerializeField] float circleRange;
     [SerializeField] GameObject bullet;
+    [SerializeField] Transform bulletSpawn;
     float coolDown;
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,7 @@ public class PistolRotation : MonoBehaviour
             direction.Normalize();
             transform.rotation= Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
             if(Time.time>=coolDown){
-                Instantiate(bullet, transform.position, Quaternion.identity);
+                Instantiate(bullet, bulletSpawn.position, Quaternion.identity);
                 coolDown = Time.time + 3;
             }
         }

@@ -12,10 +12,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dashForce;
     [SerializeField] float jumpForce;
     [SerializeField] float attackRate;
+    [SerializeField] float upSpeed;
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
     [SerializeField] HealthBar healthBar;
+    [SerializeField] GameObject ladderGround;
+
     BoxCollider2D boxCollider;
     int health = 7;
     bool isGrounded = true;
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
     bool dashCoolDown;
     int isLookRight = 1;
     float firstGravityScale;
+    bool isInLadder;
 
 
     // Start is called before the first frame update
@@ -40,6 +44,11 @@ public class PlayerController : MonoBehaviour
     {
         anim.SetFloat("AirSpeed", rb.velocity.y);
         float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        if (isInLadder)
+        {
+            UpAndDown(verticalInput);
+        }
         if (!isKnockBack && !isDash)
         {
             Move(horizontalInput);
@@ -85,21 +94,60 @@ public class PlayerController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    void UpAndDown(float vertical){
+
+        if(vertical>=.2f){
+            rb.velocity = new Vector2(rb.velocity.x, upSpeed);
+            rb.gravityScale = firstGravityScale;
+            Debug.Log("up");
+        }
+        else if (vertical<=-.2f) {
+            rb.velocity = new Vector2(rb.velocity.x, -upSpeed);
+            rb.gravityScale = firstGravityScale;
+        }
+        else{
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.gravityScale = 0;
+            Debug.Log("stop");
+
+        }
+    }
     void Attack()
     {
         nextAttackTime = Time.time + 1f / attackRate;
         anim.SetTrigger("Attack");
+
+        // find enemies in range
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Enemy"));
         foreach (Collider2D enemy in enemies)
         {
             enemy.GetComponent<Enemy>().TakeDamage(1);
         }
+
+        // find boss
         Collider2D boss = Physics2D.OverlapCircle(attackPos.position, attackRange, LayerMask.GetMask("Boss"));
         if (boss != null)
         {
             boss.GetComponent<BossController>().TakeDamage(1);
         }
 
+        // find chests in range
+        Collider2D[] chests = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Chest"));
+        foreach (Collider2D chest in chests)
+        {
+            // if chest is close, open it
+            if(chest.GetComponent<Chest>().isOpen == false)
+            {
+                chest.GetComponent<Chest>().OpenChest();
+                Debug.Log("Chest opened");
+            }
+            // if chest is open, close it
+            else
+            {
+                chest.GetComponent<Chest>().CloseChest();
+            }
+        }
     }
     private void OnDrawGizmos()
     {
@@ -207,8 +255,28 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             
         }
+        if (other.gameObject.tag == "Ladder")
+        {
+            isInLadder = true;
+            ladderGround.GetComponent<Collider2D>().enabled = false;
+
+        }
 
     }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Ladder")
+        {
+            isInLadder = false;
+            rb.gravityScale = firstGravityScale;
+            anim.SetBool("Grounded", true);
+            isGrounded = true;
+            ladderGround.GetComponent<Collider2D>().enabled = true;
+
+        }
+    }
+
+
 
 
 }

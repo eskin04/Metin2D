@@ -53,6 +53,7 @@ public class Enemy : MonoBehaviour
         Destroy(deathClone);
         Instantiate(coinPrefab, coinPos, Quaternion.identity);
         Destroy(gameObject);
+        
     }
 
     private void OnCollisionEnter2D(Collision2D other)
