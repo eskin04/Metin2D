@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] HealthBar healthBar;
     [SerializeField] GameObject ladderGround;
 
+    Rigidbody2D platformRb;
     BoxCollider2D boxCollider;
     int health = 7;
     bool isGrounded = true;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     int isLookRight = 1;
     float firstGravityScale;
     bool isInLadder;
+    bool isOnPlatform;
 
 
     // Start is called before the first frame update
@@ -155,8 +157,22 @@ public class PlayerController : MonoBehaviour
     }
     void Move(float horizontalInput)
     {
+        if(isOnPlatform)
+        {
+            if(horizontalInput==0)
+            {
+                rb.velocity = new Vector2(platformRb.velocity.x,rb.velocity.y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y) + platformRb.velocity;
+            }
+        }
+        else 
+        {
+            rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+        }
 
-        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
         if (horizontalInput != 0)
         {
             anim.SetInteger("AnimState", 2);
@@ -217,6 +233,13 @@ public class PlayerController : MonoBehaviour
             isGrounded = true;
             anim.SetBool("Grounded", true);
         }
+        if (collision.gameObject.tag == "Platform")
+        {
+            isOnPlatform = true;
+            isGrounded = true;
+            anim.SetBool("Grounded", true);
+            platformRb=collision.gameObject.GetComponent<Rigidbody2D>();
+        }
         if (collision.gameObject.tag == "Enemy")
         {
             UpdateHealth(-1);
@@ -242,6 +265,11 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Ground")
         {
+            anim.SetBool("Grounded", false);
+        }
+        if (other.gameObject.tag == "Platform")
+        {
+            isOnPlatform = false;
             anim.SetBool("Grounded", false);
         }
     }

@@ -8,6 +8,8 @@ public class bombMove : MonoBehaviour
     Transform attackPos;
     PlayerController playerScript;
     [SerializeField] float attackRange;
+    [SerializeField] GameObject explodeParticle;
+
     Collider2D player;
     bool coolDown;
     // Start is called before the first frame update
@@ -16,6 +18,7 @@ public class bombMove : MonoBehaviour
         rb= GetComponent<Rigidbody2D>();
         attackPos = GameObject.Find("PlayerHead").transform;
         playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+
 
     }
 
@@ -41,8 +44,9 @@ public class bombMove : MonoBehaviour
             playerScript.UpdateHealth(-2);
             playerScript.KnockBack(transform.position,gameObject);
         }
-
-            
+        explodeParticle.SetActive(true);
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(.5f);
         if(gameObject!=null)
         {
             Destroy(gameObject);
@@ -56,8 +60,15 @@ public class bombMove : MonoBehaviour
         if(other.gameObject.tag=="Player"){
             playerScript.UpdateHealth(-2);
             playerScript.KnockBack(transform.position,gameObject);
-            Destroy(gameObject);
+            explodeParticle.SetActive(true);
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            StartCoroutine(hitCoolDown());
         }
+    }
+    IEnumerator hitCoolDown()
+    {
+        yield return new WaitForSeconds(.5f);
+        Destroy(gameObject);
     }
 
 }
