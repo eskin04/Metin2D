@@ -27,7 +27,7 @@ TagManager:
   - Bullet
   - Boss
   - Chest
-  - 
+  - Spear
   - 
   - 
   - 
@@ -51,6 +51,9 @@ TagManager:
   m_SortingLayers:
   - name: BackGround
     uniqueID: 1565621003
+    locked: 0
+  - name: Spear
+    uniqueID: 2493125221
     locked: 0
   - name: Ground
     uniqueID: 969791133
