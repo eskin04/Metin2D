@@ -15,6 +15,9 @@ TagManager:
   - Bomb
   - Ladder
   - Platform
+  - DeathArea
+  - Spike
+  - SecretPlace
   layers:
   - Default
   - TransparentFX
@@ -28,7 +31,7 @@ TagManager:
   - Boss
   - Chest
   - Spear
-  - 
+  - SecretPlace
   - 
   - 
   - 

@@ -150,6 +150,15 @@ public class PlayerController : MonoBehaviour
                 chest.GetComponent<Chest>().CloseChest();
             }
         }
+        Collider2D[] secretPlace = Physics2D.OverlapCircleAll(attackPos.position,attackRange, LayerMask.GetMask("SecretPlace"));
+        foreach(Collider2D place in secretPlace)
+        {
+            if (place != null)
+            {
+            place.GetComponent<SecretPlace>().DestroyPlace(-1);
+            }
+        }
+        
     }
     private void OnDrawGizmos()
     {
@@ -215,6 +224,19 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(KnockBackTimer(enemy));
 
     }
+        public void KnockBackSpike(Vector3 enemyPos)
+    {
+        isKnockBack = true;
+        anim.SetTrigger("Hurt");
+        Vector2 knockBackDir = transform.position - enemyPos;
+        knockBackDir.Normalize();
+        rb.AddForce(knockBackDir * 10, ForceMode2D.Impulse);
+        StartCoroutine(KnockBackTimerSpike());
+
+    }
+
+
+    
     IEnumerator KnockBackTimer(GameObject enemy)
     {
         yield return new WaitForSeconds(0.5f);
@@ -224,6 +246,12 @@ public class PlayerController : MonoBehaviour
         {
             Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>(), false);
         }
+
+    }
+    IEnumerator KnockBackTimerSpike()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isKnockBack = false;
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -244,6 +272,12 @@ public class PlayerController : MonoBehaviour
         {
             UpdateHealth(-1);
             KnockBack(collision.transform.position, collision.gameObject);
+        }
+        if (collision.gameObject.tag == "Spike")
+        {
+            UpdateHealth(-1);
+            KnockBackSpike(collision.transform.position);
+            
         }
         if (collision.gameObject.tag == "Laser")
         {
