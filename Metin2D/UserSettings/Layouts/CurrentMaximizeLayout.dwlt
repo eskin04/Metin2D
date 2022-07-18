@@ -86,7 +86,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 241
+  controlID: 149
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,10 +223,10 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 125}
-      m_SelectedIDs: 546b0000
-      m_LastClickedID: 27476
-      m_ExpandedIDs: f485feffaeb2feff4281ffff12faffff2efbffff6e6a0000c06a0000406b0000
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 2efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -242,7 +242,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 5}
+        m_ClientGUIView: {fileID: 15}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -525,9 +525,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -6.231993, y: -27.99992, z: -0.18320936}
+    m_Target: {x: 66.09408, y: -23.02187, z: -0.23858553}
     speed: 2
-    m_Value: {x: -6.231993, y: -27.99992, z: -0.18320936}
+    m_Value: {x: 66.09408, y: -23.02187, z: -0.23858553}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -578,9 +578,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 7.35012
+    m_Target: 47.11707
     speed: 2
-    m_Value: 7.35012
+    m_Value: 47.11707
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -977,22 +977,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Cainos/Pixel Art Platformer - Village Props/Prefab
+    - Assets/Physics Material
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 67
   m_LastFolders:
-  - Assets/Cainos/Pixel Art Platformer - Village Props/Prefab
+  - Assets/Physics Material
   m_LastFoldersGridSize: 67
   m_LastProjectPath: C:\Users\ASUS\Desktop\Unity_Projeler\Metin2D\Metin2D
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 60}
-    m_SelectedIDs: ac750000
-    m_LastClickedID: 30124
-    m_ExpandedIDs: 000000000c7400000e74000010740000127400001474000016740000187400001a7400001c7400001e74000020740000227400002474000026740000287400002a7400002c74000000ca9a3b
+    scrollPos: {x: 0, y: 231}
+    m_SelectedIDs: 28770000
+    m_LastClickedID: 30504
+    m_ExpandedIDs: 000000007475000076750000787500007a7500007c7500007e75000080750000827500008475000086750000887500008a7500008c7500008e75000090750000927500009475000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1020,7 +1020,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000c7400000e74000010740000127400001474000016740000187400001a7400001c7400001e74000020740000227400002474000026740000287400002a7400002c74000000ca9a3b
+    m_ExpandedIDs: 000000007475000076750000787500007a7500007c7500007e75000080750000827500008475000086750000887500008a7500008c7500008e750000907500009275000094750000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1045,9 +1045,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 546b0000
-    m_LastClickedInstanceID: 27476
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c62300006ca9ffff46660000ee890000227d00004c1e0100846c00004a6c00004a6d00001e6d0000366d0000546c0000e06c0000ce6d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1106,7 +1106,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 61910
+  m_LastSelectedObjectID: 46128
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52

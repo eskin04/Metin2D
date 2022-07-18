@@ -289,6 +289,10 @@ public class PlayerController : MonoBehaviour
             ladderGround.GetComponent<Collider2D>().enabled = false;
 
         }
+        if (other.gameObject.tag == "DeathArea")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
 
     }
     private void OnTriggerExit2D(Collider2D other)
