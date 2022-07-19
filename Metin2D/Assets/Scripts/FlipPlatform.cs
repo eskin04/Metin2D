@@ -28,7 +28,7 @@ public class FlipPlatform : MonoBehaviour
     {
         yield return new WaitForSeconds(coolDown);
         anim.SetBool("isPlayer", true);
-        yield return new WaitForSeconds(coolDown + .25f);
+        yield return new WaitForSeconds(coolDown + 1f);
         anim.SetBool("isPlayer",false);
         
     }

@@ -18,6 +18,7 @@ TagManager:
   - DeathArea
   - Spike
   - SecretPlace
+  - Heal
   layers:
   - Default
   - TransparentFX

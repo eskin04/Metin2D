@@ -5,6 +5,7 @@ using UnityEngine;
 public class SecretPlace : MonoBehaviour
 {
     float live;
+    [SerializeField] GameObject secretPlace;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,7 @@ public class SecretPlace : MonoBehaviour
     {
         if(live <=0)
         {
+            secretPlace.SetActive(true);
             Destroy(gameObject);
         }
     }
