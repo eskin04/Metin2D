@@ -318,9 +318,9 @@ public class PlayerController : MonoBehaviour
             UpdateHealth(1);
             Destroy(other.gameObject);
         }
-        if(other.gameObject.name == "Boss Scene Trigger"){
+        if(other.gameObject.tag == "NextLevel")
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            
         }
         if (other.gameObject.tag == "Ladder")
         {

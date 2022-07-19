@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6421974912831255349}
   - component: {fileID: 6421974912831255305}
   - component: {fileID: 6421974912831255304}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Roll Spike Ball
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -183,8 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c049dca0a6356418fa079f5aa8b63c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: -16
-  deathTime: 3
+  speed: -13
+  deathTime: 6
 --- !u!1 &6421974911478599249
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6421974911478599250}
   - component: {fileID: 6421974911478599251}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 0.36862746, g: 0.34901962, b: 0.48235297, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.6
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000

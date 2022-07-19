@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1610078200876953425}
   - component: {fileID: 1610078200876953430}
   - component: {fileID: 9212444717803304050}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fire Bowl
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610078200876953431}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.66, y: -2.362114, z: -0.1058235}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 659617767618180063}
   - component: {fileID: 7705161401831428169}
   - component: {fileID: 3009611592330329146}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5025,7 +5025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1791028808330251331}
   - component: {fileID: 3892188773023099867}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5040,7 +5040,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6290435417329538212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5111,8 +5111,8 @@ MonoBehaviour:
   m_LocalBounds:
     m_Center: {x: 0, y: -0.00000011920929, z: 0}
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
-  m_PointLightInnerAngle: 180.00002
-  m_PointLightOuterAngle: 214.6154
+  m_PointLightInnerAngle: 118.590004
+  m_PointLightOuterAngle: 200.77
   m_PointLightInnerRadius: 1
   m_PointLightOuterRadius: 3
   m_ShapeLightParametricSides: 5
@@ -5132,7 +5132,7 @@ GameObject:
   - component: {fileID: 7609079560519598983}
   - component: {fileID: 7734426662215739617}
   - component: {fileID: 7733448222881805293}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9956,7 +9956,7 @@ GameObject:
   - component: {fileID: 7604030238936920921}
   - component: {fileID: 7734594427483033359}
   - component: {fileID: 7733488456239786271}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

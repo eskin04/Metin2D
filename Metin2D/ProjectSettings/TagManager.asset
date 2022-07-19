@@ -19,6 +19,7 @@ TagManager:
   - Spike
   - SecretPlace
   - Heal
+  - NextLevel
   layers:
   - Default
   - TransparentFX
