@@ -39,7 +39,7 @@ public class bombMove : MonoBehaviour
     IEnumerator coolDownTimer()
     {
         coolDown = true;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         if(player!=null){
             playerScript.UpdateHealth(-2);
             playerScript.KnockBack(transform.position,gameObject);

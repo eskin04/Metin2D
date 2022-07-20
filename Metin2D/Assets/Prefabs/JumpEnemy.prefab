@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &515053498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 515053499}
+  m_Layer: 6
+  m_Name: JumpPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &515053499
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515053498}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.27, y: 0.93, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2813204493807873618}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1535713305
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,11 +462,12 @@ Transform:
   m_GameObject: {fileID: 2813204493807873611}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 73.25, y: -11.428, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2813204495350925305}
   - {fileID: 1535713306}
+  - {fileID: 515053499}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -528,6 +560,7 @@ MonoBehaviour:
   coinPrefab: {fileID: 7813672582072352440, guid: 95b38fdc7204fc04090c68da61a93b6c, type: 3}
   deathPrefab: {fileID: 3643864013922943036, guid: 3c18331e9e6d13e438a07a5d7265ff80, type: 3}
   enemiesSpeed: 4
+  firstSpeed: 0
 --- !u!114 &2813204493807873609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,9 +574,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 2813204493807873615}
-  attackRange: 2.5
-  jumpForce: 15
-  playerHead: {fileID: 457880898811061346, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
+  attackRange: 0.5
+  jumpForce: 13
+  playerHead: {fileID: 0}
+  jumpPoint: {fileID: 515053499}
+  jumpSpeed: 8
+  coolDown: 1
 --- !u!114 &2813204493807873608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,8 +593,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 2813204493807873615}
-  circleRange: 0.8
+  circleRange: 0.5
   wallDetector: {fileID: 2813204495350925305}
+  direction: 0
 --- !u!95 &2813204493807873616
 Animator:
   serializedVersion: 4
@@ -592,9 +629,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.024543762, y: -0.04908681}
+  m_Offset: {x: -0.024543762, y: -0.03192866}
   serializedVersion: 2
-  m_Radius: 0.5191219
+  m_Radius: 0.50196373
 --- !u!1 &2813204495350925304
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,7 +656,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2813204495350925304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: -0.42, y: 0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

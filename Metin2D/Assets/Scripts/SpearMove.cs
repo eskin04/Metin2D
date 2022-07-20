@@ -17,11 +17,11 @@ public class SpearMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(!coolDown)
         {
-            transform.Translate(Vector2.up*speed*Time.deltaTime);
+            transform.Translate(Vector2.right*speed*Time.deltaTime);
             if(!oneTime)
             {    
                 oneTime=true;

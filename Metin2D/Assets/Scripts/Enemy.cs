@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] GameObject coinPrefab;
     [SerializeField] GameObject deathPrefab;
     public float enemiesSpeed;
-    float firstSpeed;
+    public float firstSpeed;
     bool isDead;
     SpriteRenderer sprite;
     private void Start()
