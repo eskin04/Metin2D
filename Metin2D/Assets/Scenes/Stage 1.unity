@@ -13903,8 +13903,8 @@ Tilemap:
   - first: {x: -23, y: -33, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -24914,9 +24914,9 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 24
+  - m_RefCount: 25
     m_Data: {fileID: 11400000, guid: 2246b6170bb9dd24bbc3c9c3c90624cc, type: 2}
-  - m_RefCount: 10
+  - m_RefCount: 9
     m_Data: {fileID: 11400000, guid: 9c5983ebc89f8aa4a9de8dbb31c0e7c1, type: 2}
   - m_RefCount: 6
     m_Data: {fileID: 11400000, guid: e73be8d24f17223439bf92f55178abe8, type: 2}
@@ -24991,9 +24991,9 @@ Tilemap:
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 24
+  - m_RefCount: 25
     m_Data: {fileID: -7190719572971877601, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
-  - m_RefCount: 10
+  - m_RefCount: 9
     m_Data: {fileID: 8652677587666043219, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
   - m_RefCount: 6
     m_Data: {fileID: -1729818555723472959, guid: 157cbc340d2b7e64ab85168e80e95550, type: 3}
@@ -25263,11 +25263,11 @@ CompositeCollider2D:
         Y: -300000000
       - X: 160000000
         Y: -320000000
-      - X: -229999900
+      - X: -219999900
         Y: -320000000
-      - X: -229999900
+      - X: -219999900
         Y: -319999959
-      - X: -229999959
+      - X: -219999959
         Y: -319999900
       - X: -340000041
         Y: -319999900
@@ -25664,7 +25664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 457880898811061351, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -32.12
+      value: -11.4
       objectReference: {fileID: 0}
     - target: {fileID: 457880898811061351, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
       propertyPath: m_LocalPosition.z
