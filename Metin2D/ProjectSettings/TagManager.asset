@@ -20,6 +20,7 @@ TagManager:
   - SecretPlace
   - Heal
   - NextLevel
+  - CameraObj
   layers:
   - Default
   - TransparentFX
@@ -68,4 +69,7 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UpGround
+    uniqueID: 940020713
     locked: 0

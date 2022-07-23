@@ -18,18 +18,24 @@ public class BossController : MonoBehaviour
     [SerializeField] float arrowSpawnTime;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject arrow;
+    [SerializeField] GameObject fires;
     [SerializeField] HealthBar healthBar;
     SpriteRenderer spriteRenderer;
     Vector2 direction;
     float time;
     float localScaleX;
     float prevRandom;
+    float powerTime;
+    bool isPowerTime;
+    float maxHealth;
     int prevArrow;
-    List<string> attacks = new List<string>() { "jumpAttack", "dashAttack", "shootAttack","arrowAttack" };
+    List<string> attacks = new List<string>() { "jumpAttack", "dashAttack", "shootAttack" };
 
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth=health;
+        powerTime=2;
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         localScaleX = transform.localScale.x;
@@ -43,12 +49,12 @@ public class BossController : MonoBehaviour
     void Update()
     {
         direction = (player.transform.position - bossGround.position).normalized;
-        if (Time.time >= time)
+        if (Time.time >= time && !isPowerTime)
         {
-            int random = Random.Range(0, 4);
+            int random = Random.Range(0, 3);
             while (random == prevRandom)
             {
-                random = Random.Range(0, 4);
+                random = Random.Range(0, 3);
             }
             rb.velocity = Vector2.zero;
             switch (attacks[random])
@@ -65,10 +71,6 @@ public class BossController : MonoBehaviour
                     StartCoroutine(WaitShoot());
                     time = Time.time + 3.5f;
                     break;
-                case "arrowAttack":
-                    StartCoroutine(WaitArrow());
-                    time = Time.time + 4f;
-                    break;
             }
             
             prevRandom = random;
@@ -77,6 +79,23 @@ public class BossController : MonoBehaviour
         if (health <= 0)
         {
             gameObject.SetActive(false);
+        }
+        if (health <= maxHealth/2 && powerTime ==2)
+        {
+            powerTime-=1;
+            StopAllCoroutines();
+            StartCoroutine(WaitArrow());
+            time = Time.time + 9f;
+            isPowerTime=true;
+        }
+
+        if (health <= maxHealth/4 && powerTime ==1)
+        {
+            powerTime-=1;
+            StopAllCoroutines();
+            StartCoroutine(WaitArrow());
+            time = Time.time + 9f;
+            isPowerTime=true;
         }
     }
     public void TakeDamage(int damage)
@@ -107,6 +126,8 @@ public class BossController : MonoBehaviour
     IEnumerator WaitArrow()
     {
         spriteRenderer.color = Color.red;
+        transform.position = new Vector3(-1.3f,8,0);
+        rb.gravityScale=0;
         yield return new WaitForSeconds(.6f);
         ArrowAttack();
     }
@@ -141,9 +162,21 @@ public class BossController : MonoBehaviour
     }
     void ArrowAttack()
     {
+        fires.SetActive(true);
         StartCoroutine(ResetColor());
         ChangeDirection();
         StartCoroutine(SpawnArrow());
+        StartCoroutine(SetHealthMax());
+    }
+    IEnumerator SetHealthMax()
+    {
+        for (int i = 0; i < maxHealth/2; i++)
+        {
+            health +=1;
+            healthBar.SetHealth(health);
+            yield return new WaitForSeconds(.5f);
+
+        }
     }
     IEnumerator SpawnArrow()
     {
@@ -159,6 +192,9 @@ public class BossController : MonoBehaviour
             prevArrow=posX;
 
         }
+        fires.SetActive(false);
+        rb.gravityScale=1;
+        isPowerTime = false;
     }
     void DashAttack()
     {
