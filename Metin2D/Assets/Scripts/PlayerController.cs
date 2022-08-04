@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Vector3 reverseScale;
     [SerializeField] HealthBar healthBar;
     [SerializeField] GameObject ladderGround;
-
+    [SerializeField] GameObject dashWind;
+    [SerializeField] GameObject fireBallPref;
     Rigidbody2D platformRb;
     BoxCollider2D boxCollider;
     int health = 7;
@@ -27,12 +28,12 @@ public class PlayerController : MonoBehaviour
     bool isKnockBack;
     bool isDash;
     bool dashCoolDown;
-    int isLookRight = 1;
+    int isLookRight;
     float firstGravityScale;
     bool isInLadder;
     bool isOnPlatform;
 
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -56,22 +57,26 @@ public class PlayerController : MonoBehaviour
             Move(horizontalInput);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isDash)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isDash && !isKnockBack)
         {
             Jump();
         }
         if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
         {
-            Attack();
+            anim.SetTrigger("Attack");
         }
         if (health <= 0)
         {
             GameOver();
         }
-        if (Input.GetMouseButtonDown(1) && !dashCoolDown)
+        if (Input.GetMouseButtonDown(1) && !dashCoolDown && !isKnockBack)
         {
             dashCoolDown = true;
             Dash();
+        }
+        if (Input.GetKeyDown(KeyCode.E) && Time.time >= nextAttackTime)
+        {
+            anim.SetTrigger("FireBall");
         }
 
     }
@@ -81,6 +86,8 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         rb.AddForce(Vector2.right * isLookRight * dashForce, ForceMode2D.Impulse);
+        anim.SetBool("isDash", true);
+        dashWind.SetActive(true);
         StartCoroutine(DashWait());
     }
     IEnumerator DashWait()
@@ -89,6 +96,8 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector2.zero;
         rb.gravityScale = firstGravityScale;
         isDash = false;
+        anim.SetBool("isDash", false);
+        dashWind.SetActive(false);
         yield return new WaitForSeconds(.4f);
         dashCoolDown = false;
     }
@@ -115,10 +124,17 @@ public class PlayerController : MonoBehaviour
 
         }
     }
+    void FireBall()
+    {
+        Vector2 playerPos = new Vector2(transform.position.x, transform.position.y - .5f);
+        nextAttackTime = Time.time + 1f / attackRate;
+        fireBallPref.transform.localScale = transform.localScale;
+        Instantiate(fireBallPref, playerPos, Quaternion.identity);
+
+    }
     void Attack()
     {
         nextAttackTime = Time.time + 1f / attackRate;
-        anim.SetTrigger("Attack");
 
         // find enemies in range
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Enemy"));
@@ -239,9 +255,13 @@ public class PlayerController : MonoBehaviour
     
     IEnumerator KnockBackTimer(GameObject enemy)
     {
+        yield return new WaitForSeconds(.1f);
+        anim.SetBool("isHurt", true);
         yield return new WaitForSeconds(0.5f);
         isKnockBack = false;
+        anim.SetBool("isHurt", false);
         yield return new WaitForSeconds(.5f);
+        
         if(enemy!=null)
         {
             Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>(), false);
@@ -250,8 +270,12 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator KnockBackTimerSpike()
     {
+        yield return new WaitForSeconds(.1f);
+        anim.SetBool("isHurt", true);
         yield return new WaitForSeconds(0.5f);
         isKnockBack = false;
+        anim.SetBool("isHurt", false);
+
 
     }
     private void OnCollisionEnter2D(Collision2D collision)

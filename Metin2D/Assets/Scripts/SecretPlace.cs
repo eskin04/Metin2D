@@ -9,7 +9,7 @@ public class SecretPlace : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        live =3;
+        live =2;
     }
 
     // Update is called once per frame
