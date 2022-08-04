@@ -127,7 +127,7 @@ public class BossController : MonoBehaviour
     {
         spriteRenderer.color = Color.red;
         transform.position = new Vector3(-1.3f,8,0);
-        rb.gravityScale=0;
+        rb.bodyType = RigidbodyType2D.Static;
         yield return new WaitForSeconds(.6f);
         ArrowAttack();
     }
@@ -193,7 +193,7 @@ public class BossController : MonoBehaviour
 
         }
         fires.SetActive(false);
-        rb.gravityScale=1;
+        rb.bodyType = RigidbodyType2D.Dynamic;
         isPowerTime = false;
     }
     void DashAttack()

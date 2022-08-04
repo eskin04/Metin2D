@@ -18,7 +18,7 @@ public class bombMove : MonoBehaviour
         rb= GetComponent<Rigidbody2D>();
         attackPos = GameObject.Find("PlayerHead").transform;
         playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-
+        
 
     }
 
@@ -34,6 +34,7 @@ public class bombMove : MonoBehaviour
         {
             StartCoroutine(coolDownTimer());
         }
+        
 
     }
     IEnumerator coolDownTimer()

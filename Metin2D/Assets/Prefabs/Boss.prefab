@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3154542483025918460}
   - component: {fileID: 3154542483025918461}
-  - component: {fileID: 3154542483025918462}
   - component: {fileID: 3154542483025918463}
   - component: {fileID: 3154542483025918456}
   m_Layer: 9
@@ -121,22 +120,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &3154542483025918462
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3154542483025918457}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.08709701, y: -0.024193605}
-  m_Size: {x: 0.9225804, y: 1.9516128}
-  m_Direction: 0
 --- !u!50 &3154542483025918463
 Rigidbody2D:
   serializedVersion: 4
@@ -179,7 +162,11 @@ MonoBehaviour:
   backForce: 15
   dashForce: 25
   health: 20
+  arrowCount: 0
+  arrowSpawnTime: 0
   bullet: {fileID: 8317598087991722629, guid: 0195086ca31a85943a23906aa37e7d3e, type: 3}
+  arrow: {fileID: 0}
+  fires: {fileID: 0}
   healthBar: {fileID: 0}
 --- !u!1 &3154542483726579959
 GameObject:
