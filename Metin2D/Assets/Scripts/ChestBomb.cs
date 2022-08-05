@@ -9,6 +9,7 @@ public class ChestBomb : MonoBehaviour
     [SerializeField] GameObject explode;
     SpriteRenderer sprite;
     Collider2D hit;
+    Collider2D hitEnemy;
     bool coolDown;
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class ChestBomb : MonoBehaviour
     void Update()
     {
         hit = Physics2D.OverlapCircle(transform.position, range, LayerMask.GetMask("Player"));
+        hitEnemy  = Physics2D.OverlapCircle(transform.position, range, LayerMask.GetMask("Enemy"));
         if (!coolDown)
         {
             
@@ -35,6 +37,10 @@ public class ChestBomb : MonoBehaviour
         {
            hit.GetComponent<PlayerController>().UpdateHealth(-2);
            hit.GetComponent<PlayerController>().KnockBack(transform.position,gameObject);
+        }
+        if(hitEnemy!= null)
+        {
+            hitEnemy.GetComponent<Enemy>().TakeDamage(2);
         }
         explode.SetActive(true);
         sprite.enabled = false;

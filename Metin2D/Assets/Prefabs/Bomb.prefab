@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1174952858850009109}
   - component: {fileID: 4738954439914098355}
   - component: {fileID: 2256322218039156717}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ExplodePurple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4822,7 +4822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5319088279255577924}
   - component: {fileID: 6907951720246925905}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5224,7 +5224,7 @@ GameObject:
   - component: {fileID: 4492652600910365552}
   - component: {fileID: 3193270952334181752}
   - component: {fileID: 4732742754989344843}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Bomb
   m_TagString: Bomb
   m_Icon: {fileID: 0}

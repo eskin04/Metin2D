@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1160172928422018962}
   - component: {fileID: 5711499085351930952}
   - component: {fileID: 1981600370672898308}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ChestExplode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4826,7 +4826,7 @@ GameObject:
   - component: {fileID: 8331415215574438705}
   - component: {fileID: 1561926046}
   - component: {fileID: -7882954252481016065}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ChestBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4984,7 +4984,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2524907269987553226}
   - component: {fileID: 7580197029525165390}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

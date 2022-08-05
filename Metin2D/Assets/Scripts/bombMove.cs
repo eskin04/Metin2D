@@ -11,6 +11,7 @@ public class bombMove : MonoBehaviour
     [SerializeField] GameObject explodeParticle;
 
     Collider2D player;
+    Collider2D enemy;
     bool coolDown;
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,7 @@ public class bombMove : MonoBehaviour
     void Update()
     {
         player = Physics2D.OverlapCircle(transform.position, attackRange, LayerMask.GetMask("Player"));
+        enemy = Physics2D.OverlapCircle(transform.position, attackRange, LayerMask.GetMask("Enemy"));
         Vector3 direction= attackPos.position - transform.position;
         direction.Normalize();
         rb.velocity = direction*3;
@@ -44,6 +46,10 @@ public class bombMove : MonoBehaviour
         if(player!=null){
             playerScript.UpdateHealth(-2);
             playerScript.KnockBack(transform.position,gameObject);
+        }
+        if(enemy!=null)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(2);
         }
         explodeParticle.SetActive(true);
         gameObject.GetComponent<SpriteRenderer>().enabled = false;

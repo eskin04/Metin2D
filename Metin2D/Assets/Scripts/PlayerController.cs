@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     float firstGravityScale;
     bool isInLadder;
     bool isOnPlatform;
+    bool isGameOver;
 
     
     // Start is called before the first frame update
@@ -45,38 +46,41 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetFloat("AirSpeed", rb.velocity.y);
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        if (isInLadder)
+        if(!isGameOver)
         {
-            UpAndDown(verticalInput);
-        }
-        if (!isKnockBack && !isDash)
-        {
-            Move(horizontalInput);
-        }
+            anim.SetFloat("AirSpeed", rb.velocity.y);
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+            if (isInLadder)
+            {
+                UpAndDown(verticalInput);
+            }
+            if (!isKnockBack && !isDash)
+            {
+                Move(horizontalInput);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isDash && !isKnockBack)
-        {
-            Jump();
-        }
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
-        {
-            anim.SetTrigger("Attack");
-        }
-        if (health <= 0)
-        {
-            GameOver();
-        }
-        if (Input.GetMouseButtonDown(1) && !dashCoolDown && !isKnockBack)
-        {
-            dashCoolDown = true;
-            Dash();
-        }
-        if (Input.GetKeyDown(KeyCode.E) && Time.time >= nextAttackTime)
-        {
-            anim.SetTrigger("FireBall");
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isDash && !isKnockBack)
+            {
+                Jump();
+            }
+            if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
+            {
+                anim.SetTrigger("Attack");
+            }
+            if (health <= 0)
+            {
+                GameOver();
+            }
+            if (Input.GetMouseButtonDown(1) && !dashCoolDown && !isKnockBack)
+            {
+                dashCoolDown = true;
+                Dash();
+            }
+            if (Input.GetKeyDown(KeyCode.E) && Time.time >= nextAttackTime)
+            {
+                anim.SetTrigger("FireBall");
+            }
         }
 
     }
@@ -103,6 +107,16 @@ public class PlayerController : MonoBehaviour
     }
     void GameOver()
     {
+        rb.velocity = Vector3.zero;
+        isGameOver = true;
+        anim.SetTrigger("Die");
+        StartCoroutine(WaitGameOver());
+    }
+    IEnumerator WaitGameOver()
+    {
+        yield return new WaitForSeconds(.7f);
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

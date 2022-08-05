@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6920188654722906063}
   - component: {fileID: 7117841848741878953}
   - component: {fileID: 7116577253218600869}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4835,7 +4835,7 @@ GameObject:
   - component: {fileID: 6924111082104506129}
   - component: {fileID: 7117763048358624071}
   - component: {fileID: 7116617219786087767}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9668,9 +9668,9 @@ GameObject:
   - component: {fileID: 6919449317722659620}
   - component: {fileID: 6919449317722659643}
   - component: {fileID: 4005635801355920171}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Campfire
-  m_TagString: Enemy
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9782,7 +9782,7 @@ GameObject:
   - component: {fileID: 8336645763389031437}
   - component: {fileID: 7640432032258163628}
   - component: {fileID: 3070983856346372115}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}

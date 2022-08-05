@@ -38,7 +38,7 @@ TagManager:
   - SpikeBall
   - BossWall
   - FireBall
-  - 
+  - Bomb
   - 
   - 
   - 
@@ -69,6 +69,9 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 3932264805
     locked: 0
   - name: UpGround
     uniqueID: 940020713

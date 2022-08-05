@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1610078200876953425}
   - component: {fileID: 1610078200876953430}
   - component: {fileID: 9212444717803304050}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Fire Bowl
-  m_TagString: Enemy
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 659617767618180063}
   - component: {fileID: 7705161401831428169}
   - component: {fileID: 3009611592330329146}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5025,7 +5025,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1791028808330251331}
   - component: {fileID: 3892188773023099867}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5132,7 +5132,7 @@ GameObject:
   - component: {fileID: 7609079560519598983}
   - component: {fileID: 7734426662215739617}
   - component: {fileID: 7733448222881805293}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9956,7 +9956,7 @@ GameObject:
   - component: {fileID: 7604030238936920921}
   - component: {fileID: 7734594427483033359}
   - component: {fileID: 7733488456239786271}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

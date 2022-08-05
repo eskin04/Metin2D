@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Enemy : MonoBehaviour
 {
@@ -11,19 +12,57 @@ public class Enemy : MonoBehaviour
     public float firstSpeed;
     bool isDead;
     SpriteRenderer sprite;
+    Color firstColor;
+    Color colorRed;
+    float firstLight;
+    float hitLight;
+    Light2D childLight;
     private void Start()
     {
         firstSpeed = enemiesSpeed;
         sprite=GetComponent<SpriteRenderer>();
+        childLight = transform.Find("Light 2D").GetComponent<Light2D>();
+        firstLight = childLight.intensity;
+        hitLight = firstLight*3;
+        firstColor = childLight.color;
+        colorRed = new Color32(97, 7, 10, 255);
+
     }
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("hit");
+        
         health -= damage;
-        enemiesSpeed = -enemiesSpeed * 1.5f;
-        StartCoroutine(ResetSpeed());
+        Transform playerPos = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        Vector3 direct = (playerPos.position - transform.position).normalized;
+        enemiesSpeed = enemiesSpeed * 1.5f * transform.localScale.x*direct.x;
+        StartCoroutine(ChangeColor());
+    }
+    IEnumerator ChangeColor()
+    {
+        childLight.intensity = hitLight;
+        childLight.color = colorRed;
+        for (int i = 0; i < 3; i++)
+        {
 
+            yield return new WaitForSeconds(.05f);
+            childLight.intensity = hitLight;
+            childLight.color = colorRed;
+            yield return new WaitForSeconds(.05f);
+            childLight.intensity = firstLight;
+            childLight.color = firstColor;
+
+        }
+        enemiesSpeed = 0;
+        yield return new WaitForSeconds(.25f);
+        enemiesSpeed = firstSpeed;
+    }
+    public void HitPlayer()
+    {
+        Transform playerPos = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        Vector3 direct = (playerPos.position - transform.position).normalized;
+        enemiesSpeed = enemiesSpeed * 1.5f * transform.localScale.x * direct.x;
+        StartCoroutine(ResetSpeed());
     }
     IEnumerator ResetSpeed()
     {
@@ -31,7 +70,9 @@ public class Enemy : MonoBehaviour
         enemiesSpeed = 0;
         yield return new WaitForSeconds(.25f);
         enemiesSpeed = firstSpeed;
+
     }
+
     private void Update()
     {
         if (health <= 0 && !isDead)
@@ -60,7 +101,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            TakeDamage(0);
+            HitPlayer();
         }
     }
 

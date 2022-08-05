@@ -7,7 +7,6 @@ public class JumpEnemyMove : MonoBehaviour
     [SerializeField] Rigidbody2D rb;
     [SerializeField] float attackRange;
     [SerializeField] float jumpForce;
-    [SerializeField] GameObject playerHead;
     [SerializeField] Transform jumpPoint;
     [SerializeField] float jumpSpeed;
     Animator anim;
@@ -15,7 +14,6 @@ public class JumpEnemyMove : MonoBehaviour
     EnemyMove enemyMove;
     bool isGround = true;
     float time;
-    bool isFirstTime;
     [SerializeField] float coolDown;
 
 
@@ -39,7 +37,6 @@ public class JumpEnemyMove : MonoBehaviour
                 anim.SetTrigger("isPlayer");
                 isGround = false;
                 enemy.enemiesSpeed = jumpSpeed;
-                isFirstTime = true;
                 time =coolDown + Time.time;
             }
         }
@@ -53,10 +50,6 @@ public class JumpEnemyMove : MonoBehaviour
     {
         if (other.gameObject.tag == "Ground")
         {
-            if(isFirstTime)
-            {
-                enemyMove.direction*=-1;
-            }
             isGround = true;
             enemy.enemiesSpeed = enemy.firstSpeed;
         }

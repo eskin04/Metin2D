@@ -375,6 +375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyBird (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3009561562999209759, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: playerPos
+      value: 
+      objectReference: {fileID: 514393718}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
 --- !u!1 &46255465
@@ -6469,6 +6473,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyBird
       objectReference: {fileID: 0}
+    - target: {fileID: 3009561562999209759, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: playerPos
+      value: 
+      objectReference: {fileID: 514393718}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
 --- !u!1 &708700753
@@ -84292,10 +84300,6 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 457880898811061351, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 457880898811061351, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.04
       objectReference: {fileID: 0}
@@ -85087,6 +85091,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2059032626}
     m_Modifications:
+    - target: {fileID: 1417151743, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: m_Intensity
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3009561562999209728, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -85131,6 +85139,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3009561562999209729, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3009561562999209729, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3009561562999209729, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3009561562999209729, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3009561562999209731, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
       propertyPath: playerHead
       value: 
@@ -85139,6 +85163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyBird (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3009561562999209759, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
+      propertyPath: playerPos
+      value: 
+      objectReference: {fileID: 514393718}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8039b54e8f43741b8c091ed4698cbe, type: 3}
 --- !u!1001 &2051400247

@@ -271,6 +271,7 @@ MonoBehaviour:
   rb: {fileID: 1536878757453455474}
   circleRange: 0.3
   wallDetector: {fileID: 1536878757764561894}
+  direction: 0
 --- !u!50 &1536878757453455474
 Rigidbody2D:
   serializedVersion: 4
@@ -307,7 +308,9 @@ MonoBehaviour:
   health: 3
   coinPrefab: {fileID: 7813672582072352440, guid: 95b38fdc7204fc04090c68da61a93b6c, type: 3}
   deathPrefab: {fileID: 3643864013922943036, guid: 3c18331e9e6d13e438a07a5d7265ff80, type: 3}
+  playerPos: {fileID: 457880898811061351, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
   enemiesSpeed: 5
+  firstSpeed: 0
 --- !u!95 &1536878757453455472
 Animator:
   serializedVersion: 4
