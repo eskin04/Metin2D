@@ -35,6 +35,11 @@ public class FireBallMove : MonoBehaviour
             collision.gameObject.GetComponent<Enemy>().TakeDamage(1);
             Destroy(gameObject);
         }
+        if (collision.gameObject.tag == "Boss")
+        {
+            collision.gameObject.GetComponent<BossController>().TakeDamage(1);
+            Destroy(gameObject);
+        }
 
     }
 }

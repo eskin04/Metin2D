@@ -7,12 +7,15 @@ public class BulletMove : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField] Transform Player;
     [SerializeField] float speed;
+    GameObject weapon;
     bool isTimeUp;
     bool isStop;
     Vector2 direction;
     // Start is called before the first frame update
     void Start()
     {
+        weapon = GameObject.Find("Weapon");
+        weapon.SetActive(false);
         rb = GetComponent<Rigidbody2D>();
         direction = (Player.position - transform.position).normalized;
         StartCoroutine(TimeUp());
@@ -25,6 +28,7 @@ public class BulletMove : MonoBehaviour
         isTimeUp = true;
         yield return new WaitForSeconds(.7f);
         Destroy(gameObject);
+        weapon.SetActive(true);
 
 
     }
@@ -47,8 +51,9 @@ public class BulletMove : MonoBehaviour
         if (other.gameObject.tag == "Destroy")
         {
             Destroy(gameObject);
+            weapon.SetActive(true);
         }
-        if( other.gameObject.tag =="Wall")
+        if ( other.gameObject.tag =="Wall")
         {
             isStop = true;
         }

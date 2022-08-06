@@ -274,7 +274,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         isKnockBack = false;
         anim.SetBool("isHurt", false);
-        yield return new WaitForSeconds(.5f);
         
         if(enemy!=null)
         {
@@ -329,7 +328,7 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.tag == "Boss")
         {
-            UpdateHealth(-2);
+            UpdateHealth(-1);
             KnockBack(collision.transform.position, collision.gameObject);
         }
     }

@@ -16,7 +16,7 @@ public class bombMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb= GetComponent<Rigidbody2D>();
+            rb= GetComponent<Rigidbody2D>();
         attackPos = GameObject.Find("PlayerHead").transform;
         playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
         
