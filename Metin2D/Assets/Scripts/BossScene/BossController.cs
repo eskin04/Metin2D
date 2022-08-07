@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class BossController : MonoBehaviour
 {
@@ -16,9 +17,12 @@ public class BossController : MonoBehaviour
     [SerializeField] float health;
     [SerializeField] float arrowCount;
     [SerializeField] float arrowSpawnTime;
+    [SerializeField] float swordJump;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject arrow;
     [SerializeField] HealthBar healthBar;
+    Light2D lightBoss;
+    float firstLight;
     SwordManAnim swordManScript;
     Animator anim;
     Vector2 direction;
@@ -27,9 +31,10 @@ public class BossController : MonoBehaviour
     float prevRandom;
     float powerTime;
     bool isPowerTime;
+    bool isBossDie;
     float maxHealth;
     int prevArrow;
-    List<string> attacks = new List<string>() { "jumpAttack", "dashAttack", "shootAttack" };
+    List<string> attacks = new List<string>() { "jumpAttack", "dashAttack", "shootAttack","swordAttack" };
 
     // Start is called before the first frame update
     void Start()
@@ -44,42 +49,48 @@ public class BossController : MonoBehaviour
         prevRandom=10;
         anim = GetComponent<Animator>();
         swordManScript = transform.Find("sword_man").GetComponent<SwordManAnim>();
+        lightBoss = transform.Find("Light 2D").GetComponent<Light2D>();
+        firstLight = lightBoss.intensity;
     }
 
     // Update is called once per frame
     void Update()
     {
         direction = (player.transform.position - bossGround.position).normalized;
-        if (Time.time >= time && !isPowerTime)
+        if (Time.time >= time && !isPowerTime && !isBossDie)
         {
-            int random = Random.Range(0, 3);
+            int random = Random.Range(0, attacks.Count);
             while (random == prevRandom)
             {
-                random = Random.Range(0, 3);
+                random = Random.Range(0, attacks.Count);
             }
             rb.velocity = Vector2.zero;
             switch (attacks[random])
             {
                 case "jumpAttack":
                     StartCoroutine(WaitJump());
-                    time = Time.time + 4f;
+                    time = Time.time + 4.5f;
                     break;
                 case "dashAttack":
                     StartCoroutine(WaitDash());
-                    time = Time.time + 3.5f;
+                    time = Time.time + 4f;
                     break;
                 case "shootAttack":
                     StartCoroutine(WaitShoot());
-                    time = Time.time + 3.5f;
+                    time = Time.time + 4f;
+                    break;
+                case "swordAttack":
+                    StartCoroutine(WaitSword());
+                    time = Time.time + 2f;
                     break;
             }
             
             prevRandom = random;
             
         }
-        if (health <= 0)
+        if (health <= 0 && !isBossDie)
         {
-            gameObject.SetActive(false);
+            KillBoss();
         }
         if (health <= maxHealth/2 && powerTime ==2)
         {
@@ -99,12 +110,45 @@ public class BossController : MonoBehaviour
             isPowerTime=true;
         }
     }
-    public void TakeDamage(int damage)
+    void KillBoss()
+    {
+        StopAllCoroutines();
+        StartCoroutine(LightTimer());
+        isBossDie = true;
+        if(rb.bodyType == RigidbodyType2D.Static)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+
+        }
+        swordManScript.BossDie();
+        StartCoroutine(KillBossWait());
+    }
+    IEnumerator KillBossWait()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+
+    }
+    public void TakeBossDamage(int damage)
     {
         health -= damage;
         healthBar.SetHealth(health);
+        lightBoss.intensity = 5;
+        StartCoroutine(LightTimer());
     }
+    IEnumerator LightTimer()
+    {
+        yield return new WaitForSeconds(.1f);
+        lightBoss.intensity = firstLight;
+    }
+    IEnumerator WaitSword()
+    {
+        swordManScript.SwordAttackAnim();
+        rb.velocity = new Vector2(direction.x * swordJump, swordJump);
+        yield return new WaitForSeconds(1f);
+        SwordAttack();
 
+    }
     IEnumerator WaitJump(){
         swordManScript.JumpForce();
         yield return new WaitForSeconds(1f);
@@ -123,13 +167,26 @@ public class BossController : MonoBehaviour
     IEnumerator WaitArrow()
     {
         swordManScript.ArrowPowerStart();
-        transform.position = new Vector3(-1.3f,8,0);
+        lightBoss.intensity = firstLight;
+        transform.position = new Vector3(-1.3f,6,0);
         rb.bodyType = RigidbodyType2D.Static;
         yield return new WaitForSeconds(.6f);
         ArrowAttack();
 
     }
+    void SwordAttack()
+    {
+        ChangeDirection();
+        rb.velocity = new Vector2(direction.x * swordJump , -swordJump);
+        StartCoroutine(ZeroVelocity());
+    }
+    IEnumerator ZeroVelocity()
+    {
+        yield return new WaitForSeconds(waitTime);
+        rb.velocity = Vector2.zero;
 
+
+    }
     void JumpAttack()
     {
       
@@ -167,7 +224,6 @@ public class BossController : MonoBehaviour
     }
     void ArrowAttack()
     {
-        
         ChangeDirection();
         StartCoroutine(SpawnArrow());
         StartCoroutine(SetHealthMax());

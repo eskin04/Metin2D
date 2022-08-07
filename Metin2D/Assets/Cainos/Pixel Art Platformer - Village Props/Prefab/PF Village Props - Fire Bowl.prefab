@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1603787392064301939}
   - component: {fileID: 1481431095422943253}
   - component: {fileID: 1480443504620739353}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4835,7 +4835,7 @@ GameObject:
   - component: {fileID: 1612249769535806381}
   - component: {fileID: 1481650259193849851}
   - component: {fileID: 1480544562795201003}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9667,7 +9667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7422546397507806391}
   - component: {fileID: 5321839380082770735}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9774,7 +9774,7 @@ GameObject:
   - component: {fileID: 8574364906342587179}
   - component: {fileID: 1528715688950921405}
   - component: {fileID: 6205226247748179150}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14674,9 +14674,9 @@ GameObject:
   - component: {fileID: 7602366711053158309}
   - component: {fileID: 7602366711053158306}
   - component: {fileID: 853286022}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PF Village Props - Fire Bowl
-  m_TagString: Enemy
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

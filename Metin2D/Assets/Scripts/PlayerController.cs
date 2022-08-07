@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float attackRate;
     [SerializeField] float upSpeed;
+    [SerializeField] float slowMotion;
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     bool dashCoolDown;
     int isLookRight;
     float firstGravityScale;
+    float fixedTime;
     bool isInLadder;
     bool isOnPlatform;
     bool isGameOver;
@@ -38,9 +40,12 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Physics2D.IgnoreLayerCollision(7, 9, false); 
+        Physics2D.IgnoreLayerCollision(7, 6, false);
         firstGravityScale = rb.gravityScale;
-        boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider = gameObject.GetComponent<BoxCollider2D>();
         healthBar.SetMaxHealth(health);
+        fixedTime = Time.fixedDeltaTime;
     }
 
     // Update is called once per frame
@@ -117,6 +122,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.7f);
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSeconds(.5f);
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = fixedTime;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -158,10 +165,15 @@ public class PlayerController : MonoBehaviour
         }
 
         // find boss
-        Collider2D boss = Physics2D.OverlapCircle(attackPos.position, attackRange, LayerMask.GetMask("Boss"));
-        if (boss != null)
+        Collider2D[] bosses = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Boss"));
+        foreach(Collider2D boss in bosses)
         {
-            boss.GetComponent<BossController>().TakeDamage(1);
+
+            if(boss.gameObject.tag == "Boss" && boss != null)
+            {
+                boss.GetComponent<BossController>().TakeBossDamage(1);
+
+            }
         }
 
         // find chests in range
@@ -172,7 +184,6 @@ public class PlayerController : MonoBehaviour
             if(chest.GetComponent<Chest>().isOpen == false)
             {
                 chest.GetComponent<Chest>().OpenChest();
-                Debug.Log("Chest opened");
             }
             // if chest is open, close it
             else
@@ -250,7 +261,11 @@ public class PlayerController : MonoBehaviour
         Vector2 knockBackDir = transform.position - enemyPos;
         knockBackDir.Normalize();
         rb.AddForce(knockBackDir * 3, ForceMode2D.Impulse);
-        Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>());
+
+        Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer);
+
+        Time.timeScale = slowMotion;
+        Time.fixedDeltaTime *= slowMotion;
         StartCoroutine(KnockBackTimer(enemy));
 
     }
@@ -261,6 +276,8 @@ public class PlayerController : MonoBehaviour
         Vector2 knockBackDir = transform.position - enemyPos;
         knockBackDir.Normalize();
         rb.AddForce(knockBackDir * 10, ForceMode2D.Impulse);
+        Time.timeScale = slowMotion;
+        Time.fixedDeltaTime *= slowMotion;
         StartCoroutine(KnockBackTimerSpike());
 
     }
@@ -271,13 +288,17 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(.1f);
         anim.SetBool("isHurt", true);
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = fixedTime;
         yield return new WaitForSeconds(0.5f);
         isKnockBack = false;
+
         anim.SetBool("isHurt", false);
-        
+        yield return new WaitForSeconds(.3f);
         if(enemy!=null)
         {
-            Physics2D.IgnoreCollision(boxCollider, enemy.GetComponent<Collider2D>(), false);
+            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer,false);
+
         }
 
     }
@@ -285,8 +306,12 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(.1f);
         anim.SetBool("isHurt", true);
-        yield return new WaitForSeconds(0.5f);
+        Time.timeScale = 1;
+        Time.fixedDeltaTime = fixedTime;
+        yield return new WaitForSeconds(0.2f);
         isKnockBack = false;
+
+        yield return new WaitForSeconds(.3f);
         anim.SetBool("isHurt", false);
 
 

@@ -73,6 +73,9 @@ TagManager:
   - name: Player
     uniqueID: 3932264805
     locked: 0
+  - name: Boss
+    uniqueID: 3427629939
+    locked: 0
   - name: UpGround
     uniqueID: 940020713
     locked: 0

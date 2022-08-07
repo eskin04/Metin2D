@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8214163276875219970}
   - component: {fileID: 2117140626807243006}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,9 +118,9 @@ GameObject:
   - component: {fileID: 6309599118117444193}
   - component: {fileID: 263501503}
   - component: {fileID: 6118040500625843698}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PF Village Props - Campfire
-  m_TagString: Enemy
+  m_TagString: Spike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -258,7 +258,7 @@ GameObject:
   - component: {fileID: 6305464844439045707}
   - component: {fileID: 6147905309449828893}
   - component: {fileID: 6149011280757300237}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5091,7 +5091,7 @@ GameObject:
   - component: {fileID: 6313926156795901589}
   - component: {fileID: 6147774108341165555}
   - component: {fileID: 6149042726069847807}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9917,7 +9917,7 @@ GameObject:
   - component: {fileID: 4910990326723642711}
   - component: {fileID: 6746010687172772598}
   - component: {fileID: 2092118849474500937}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14816,7 +14816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1073797883058810370}
   - component: {fileID: 1495477756939212510}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -48,9 +48,18 @@ public class SwordManAnim : MonoBehaviour
     public void ArrowPowerStart()
     {
         anim.SetBool("isArrowPower", true);
+        anim.SetTrigger("ArrowAttack");
     }
     public void ArrowPowerEnd()
     {
         anim.SetBool("isArrowPower", false);
+    }
+    public void SwordAttackAnim()
+    {
+        anim.SetTrigger("swordAttack");
+    }
+    public void BossDie()
+    {
+        anim.SetTrigger("die");
     }
 }
