@@ -1,4 +1,4 @@
-﻿{
+{
     "files.exclude":
     {
         "**/.DS_Store":true,
@@ -50,7 +50,11 @@
         "Obj/":true,
         "ProjectSettings/":true,
         "temp/":true,
-        "Temp/":true
+        "Temp/":true,
+        "editor.quickSuggestions": true,
+        "editor.suggestOnTriggerCharacters": true,
+        "omnisharp.path": "latest",
+        "editor.tabCompletion": "on"
     }
 
 }

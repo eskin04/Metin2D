@@ -23,7 +23,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject fireBallPref;
     Rigidbody2D platformRb;
     BoxCollider2D boxCollider;
-    int health = 7;
+    public int currentScene;
+    public int health ;
+    public float totalCoin;
     bool isGrounded = true;
     float nextAttackTime;
     bool isKnockBack;
@@ -36,22 +38,32 @@ public class PlayerController : MonoBehaviour
     bool isOnPlatform;
     bool isGameOver;
 
-    
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        Physics2D.IgnoreLayerCollision(7, 9, false); 
+
+        Physics2D.IgnoreLayerCollision(7, 9, false);
         Physics2D.IgnoreLayerCollision(7, 6, false);
         firstGravityScale = rb.gravityScale;
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         healthBar.SetMaxHealth(health);
         fixedTime = Time.fixedDeltaTime;
+        currentScene = SceneManager.GetActiveScene().buildIndex;
+        Debug.Log(currentScene);
+
+    }
+    void CoinUpdate(float coin)
+    {
+        totalCoin += coin;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!isGameOver)
+        if (!isGameOver)
         {
             anim.SetFloat("AirSpeed", rb.velocity.y);
             float horizontalInput = Input.GetAxis("Horizontal");
@@ -127,18 +139,22 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void UpAndDown(float vertical){
+    void UpAndDown(float vertical)
+    {
 
-        if(vertical>=.2f){
+        if (vertical >= .2f)
+        {
             rb.velocity = new Vector2(rb.velocity.x, upSpeed);
             rb.gravityScale = firstGravityScale;
             Debug.Log("up");
         }
-        else if (vertical<=-.2f) {
+        else if (vertical <= -.2f)
+        {
             rb.velocity = new Vector2(rb.velocity.x, -upSpeed);
             rb.gravityScale = firstGravityScale;
         }
-        else{
+        else
+        {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.gravityScale = 0;
             Debug.Log("stop");
@@ -166,10 +182,10 @@ public class PlayerController : MonoBehaviour
 
         // find boss
         Collider2D[] bosses = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Boss"));
-        foreach(Collider2D boss in bosses)
+        foreach (Collider2D boss in bosses)
         {
 
-            if(boss.gameObject.tag == "Boss" && boss != null)
+            if (boss.gameObject.tag == "Boss" && boss != null)
             {
                 boss.GetComponent<BossController>().TakeBossDamage(1);
 
@@ -181,7 +197,7 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D chest in chests)
         {
             // if chest is close, open it
-            if(chest.GetComponent<Chest>().isOpen == false)
+            if (chest.GetComponent<Chest>().isOpen == false)
             {
                 chest.GetComponent<Chest>().OpenChest();
             }
@@ -191,15 +207,15 @@ public class PlayerController : MonoBehaviour
                 chest.GetComponent<Chest>().CloseChest();
             }
         }
-        Collider2D[] secretPlace = Physics2D.OverlapCircleAll(attackPos.position,attackRange, LayerMask.GetMask("SecretPlace"));
-        foreach(Collider2D place in secretPlace)
+        Collider2D[] secretPlace = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("SecretPlace"));
+        foreach (Collider2D place in secretPlace)
         {
             if (place != null)
             {
-            place.GetComponent<SecretPlace>().DestroyPlace(-1);
+                place.GetComponent<SecretPlace>().DestroyPlace(-1);
             }
         }
-        
+
     }
     private void OnDrawGizmos()
     {
@@ -207,18 +223,18 @@ public class PlayerController : MonoBehaviour
     }
     void Move(float horizontalInput)
     {
-        if(isOnPlatform)
+        if (isOnPlatform)
         {
-            if(horizontalInput==0)
+            if (horizontalInput == 0)
             {
-                rb.velocity = new Vector2(platformRb.velocity.x,rb.velocity.y);
+                rb.velocity = new Vector2(platformRb.velocity.x, rb.velocity.y);
             }
             else
             {
                 rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y) + platformRb.velocity;
             }
         }
-        else 
+        else
         {
             rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
         }
@@ -269,7 +285,7 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(KnockBackTimer(enemy));
 
     }
-        public void KnockBackSpike(Vector3 enemyPos)
+    public void KnockBackSpike(Vector3 enemyPos)
     {
         isKnockBack = true;
         anim.SetTrigger("Hurt");
@@ -283,7 +299,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    
+
     IEnumerator KnockBackTimer(GameObject enemy)
     {
         yield return new WaitForSeconds(.1f);
@@ -295,9 +311,9 @@ public class PlayerController : MonoBehaviour
 
         anim.SetBool("isHurt", false);
         yield return new WaitForSeconds(.3f);
-        if(enemy!=null)
+        if (enemy != null)
         {
-            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer,false);
+            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
 
         }
 
@@ -328,7 +344,7 @@ public class PlayerController : MonoBehaviour
             isOnPlatform = true;
             isGrounded = true;
             anim.SetBool("Grounded", true);
-            platformRb=collision.gameObject.GetComponent<Rigidbody2D>();
+            platformRb = collision.gameObject.GetComponent<Rigidbody2D>();
         }
         if (collision.gameObject.tag == "Enemy")
         {
@@ -339,7 +355,7 @@ public class PlayerController : MonoBehaviour
         {
             UpdateHealth(-1);
             KnockBackSpike(collision.transform.position);
-            
+
         }
         if (collision.gameObject.tag == "Laser")
         {
@@ -373,6 +389,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Coin")
         {
+            CoinUpdate(1);
             Destroy(other.gameObject);
         }
         if (other.gameObject.tag == "Heal")
@@ -380,7 +397,7 @@ public class PlayerController : MonoBehaviour
             UpdateHealth(1);
             Destroy(other.gameObject);
         }
-        if(other.gameObject.tag == "NextLevel")
+        if (other.gameObject.tag == "NextLevel")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
