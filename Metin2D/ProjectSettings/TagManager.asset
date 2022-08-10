@@ -21,6 +21,8 @@ TagManager:
   - Heal
   - NextLevel
   - CameraObj
+  - coinText
+  - HealthImg
   layers:
   - Default
   - TransparentFX

@@ -421,6 +421,7 @@ GameObject:
   - component: {fileID: 457880898811061352}
   - component: {fileID: 457880898811061355}
   - component: {fileID: 4896076947189141367}
+  - component: {fileID: 4230625308586744110}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -566,17 +567,13 @@ MonoBehaviour:
   jumpForce: 14
   attackRate: 4
   upSpeed: 5
-  slowMotion: 0
+  slowMotion: 0.5
   anim: {fileID: 457880898811061355}
   localScale: {x: -1, y: 1, z: 1}
   reverseScale: {x: 1, y: 1, z: 1}
-  healthBar: {fileID: 0}
   ladderGround: {fileID: 0}
   dashWind: {fileID: 1526380144}
   fireBallPref: {fileID: 4384400355812730071, guid: 971648ab6c444f844b23398b3167f4c6, type: 3}
-  currentScene: 0
-  health: 7
-  totalCoin: 0
 --- !u!95 &457880898811061355
 Animator:
   serializedVersion: 4
@@ -609,3 +606,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74c4c51a1d4bc824b811b140b06b1b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalCoin: 0
+  currentScene: 0
+--- !u!114 &4230625308586744110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457880898811061346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcedf719108052546949a261bc2d8cbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 5

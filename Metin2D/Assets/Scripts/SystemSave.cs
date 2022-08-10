@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public static class SystemSave
 {
 
-    public static void SavePlayer(PlayerController player)
+    public static void SavePlayer(PlayerData player)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/player.fun";
@@ -26,9 +26,17 @@ public static class SystemSave
         }
         else
         {
-            Debug.LogError("Save file not found in " + path);
             return null;
         }
     }
+    public static void RemovePlayer(PlayerData player)
+    {
+        string path = Application.persistentDataPath + "/player.fun";
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+    }
+
 
 }

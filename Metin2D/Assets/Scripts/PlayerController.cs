@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,15 +18,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
-    [SerializeField] HealthBar healthBar;
     [SerializeField] GameObject ladderGround;
     [SerializeField] GameObject dashWind;
     [SerializeField] GameObject fireBallPref;
+    PlayerData playerDataSc;
+    PlayerHealth playerHealthSc;
+    TextMeshProUGUI coinText;
     Rigidbody2D platformRb;
     BoxCollider2D boxCollider;
-    public int currentScene;
-    public int health ;
-    public float totalCoin;
     bool isGrounded = true;
     float nextAttackTime;
     bool isKnockBack;
@@ -40,24 +40,24 @@ public class PlayerController : MonoBehaviour
 
 
 
-
     // Start is called before the first frame update
     void Start()
     {
-
+        playerDataSc = GetComponent<PlayerData>();
+        playerHealthSc = GetComponent<PlayerHealth>();
         Physics2D.IgnoreLayerCollision(7, 9, false);
         Physics2D.IgnoreLayerCollision(7, 6, false);
         firstGravityScale = rb.gravityScale;
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
-        healthBar.SetMaxHealth(health);
         fixedTime = Time.fixedDeltaTime;
-        currentScene = SceneManager.GetActiveScene().buildIndex;
-        Debug.Log(currentScene);
+        coinText ??= GameObject.FindGameObjectWithTag("coinText").GetComponent<TextMeshProUGUI>();
+        CoinUpdate(0);
 
     }
-    void CoinUpdate(float coin)
+    public void CoinUpdate(float coin)
     {
-        totalCoin += coin;
+        playerDataSc.totalCoin += coin;
+        coinText.text = playerDataSc.totalCoin.ToString();
     }
 
     // Update is called once per frame
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetTrigger("Attack");
             }
-            if (health <= 0)
+            if (playerHealthSc.health <= 0)
             {
                 GameOver();
             }
@@ -136,7 +136,8 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         Time.timeScale = 1;
         Time.fixedDeltaTime = fixedTime;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(playerDataSc.currentScene);
+
     }
 
     void UpAndDown(float vertical)
@@ -146,7 +147,6 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, upSpeed);
             rb.gravityScale = firstGravityScale;
-            Debug.Log("up");
         }
         else if (vertical <= -.2f)
         {
@@ -157,7 +157,6 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.gravityScale = 0;
-            Debug.Log("stop");
 
         }
     }
@@ -267,8 +266,8 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHealth(int add)
     {
-        health += add;
-        healthBar.SetHealth(health);
+        playerHealthSc.health += add;
+        playerHealthSc.SetHealthImg();
     }
     public void KnockBack(Vector3 enemyPos, GameObject enemy)
     {
@@ -338,6 +337,7 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
             anim.SetBool("Grounded", true);
+
         }
         if (collision.gameObject.tag == "Platform")
         {
@@ -399,7 +399,9 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.tag == "NextLevel")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            playerDataSc.currentScene += 1;
+            playerDataSc.Save();
+            SceneManager.LoadScene(playerDataSc.currentScene);
         }
         if (other.gameObject.tag == "Ladder")
         {
@@ -409,7 +411,7 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.tag == "DeathArea")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneManager.LoadScene(playerDataSc.currentScene);
         }
 
     }

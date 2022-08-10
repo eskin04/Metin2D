@@ -7,12 +7,10 @@ public class Data
 {
     public int sceneBuild;
     public float coin;
-    public int health;
 
-    public Data(PlayerController player)
+    public Data(PlayerData player)
     {
         sceneBuild = player.currentScene;
-        health = player.health;
         coin = player.totalCoin;
     }
 
