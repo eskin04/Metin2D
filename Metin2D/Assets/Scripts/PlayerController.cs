@@ -15,20 +15,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float attackRate;
     [SerializeField] float upSpeed;
     [SerializeField] float slowMotion;
+    [SerializeField] int fireBallCount;
+
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
     [SerializeField] GameObject ladderGround;
     [SerializeField] GameObject dashWind;
     [SerializeField] GameObject fireBallPref;
+    [SerializeField] GameObject spikeHurt;
+    [SerializeField] GameObject protection;
+    [SerializeField] TextMeshProUGUI fireBallText;
+
     PlayerData playerDataSc;
     PlayerHealth playerHealthSc;
     TextMeshProUGUI coinText;
     Rigidbody2D platformRb;
     BoxCollider2D boxCollider;
+    Vector3 exitGroundPos;
     bool isGrounded = true;
     float nextAttackTime;
-    bool isKnockBack;
+    public bool isKnockBack;
     bool isDash;
     bool dashCoolDown;
     int isLookRight;
@@ -47,11 +54,13 @@ public class PlayerController : MonoBehaviour
         playerHealthSc = GetComponent<PlayerHealth>();
         Physics2D.IgnoreLayerCollision(7, 9, false);
         Physics2D.IgnoreLayerCollision(7, 6, false);
+        Physics2D.IgnoreLayerCollision(7, 11, false);
         firstGravityScale = rb.gravityScale;
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         fixedTime = Time.fixedDeltaTime;
         coinText ??= GameObject.FindGameObjectWithTag("coinText").GetComponent<TextMeshProUGUI>();
         CoinUpdate(0);
+        fireBallText.text = fireBallCount.ToString();
 
     }
     public void CoinUpdate(float coin)
@@ -94,7 +103,7 @@ public class PlayerController : MonoBehaviour
                 dashCoolDown = true;
                 Dash();
             }
-            if (Input.GetKeyDown(KeyCode.E) && Time.time >= nextAttackTime)
+            if (Input.GetKeyDown(KeyCode.E) && Time.time >= nextAttackTime && fireBallCount > 0)
             {
                 anim.SetTrigger("FireBall");
             }
@@ -166,6 +175,8 @@ public class PlayerController : MonoBehaviour
         nextAttackTime = Time.time + 1f / attackRate;
         fireBallPref.transform.localScale = transform.localScale;
         Instantiate(fireBallPref, playerPos, Quaternion.identity);
+        fireBallCount--;
+        fireBallText.text = fireBallCount.ToString();
 
     }
     void Attack()
@@ -271,29 +282,36 @@ public class PlayerController : MonoBehaviour
     }
     public void KnockBack(Vector3 enemyPos, GameObject enemy)
     {
-        isKnockBack = true;
-        anim.SetTrigger("Hurt");
-        Vector2 knockBackDir = transform.position - enemyPos;
-        knockBackDir.Normalize();
-        rb.AddForce(knockBackDir * 3, ForceMode2D.Impulse);
+        if (playerHealthSc.health > 0)
+        {
+            isKnockBack = true;
+            anim.SetTrigger("Hurt");
+            anim.SetBool("isHurt", true);
 
-        Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer);
+            Vector2 knockBackDir = transform.position - enemyPos;
+            knockBackDir.Normalize();
+            rb.AddForce(knockBackDir * 3, ForceMode2D.Impulse);
 
-        Time.timeScale = slowMotion;
-        Time.fixedDeltaTime *= slowMotion;
-        StartCoroutine(KnockBackTimer(enemy));
+            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer);
+
+            Time.timeScale = slowMotion;
+            Time.fixedDeltaTime *= slowMotion;
+            StartCoroutine(KnockBackTimer(enemy));
+        }
 
     }
-    public void KnockBackSpike(Vector3 enemyPos)
+    public void KnockBackSpike(Vector3 enemyPos, GameObject enemy)
     {
-        isKnockBack = true;
-        anim.SetTrigger("Hurt");
-        Vector2 knockBackDir = transform.position - enemyPos;
-        knockBackDir.Normalize();
-        rb.AddForce(knockBackDir * 10, ForceMode2D.Impulse);
-        Time.timeScale = slowMotion;
-        Time.fixedDeltaTime *= slowMotion;
-        StartCoroutine(KnockBackTimerSpike());
+        if (playerHealthSc.health > 0)
+        {
+            isKnockBack = true;
+            anim.SetTrigger("Hurt");
+            anim.SetBool("isHurt", true);
+            Time.timeScale = slowMotion;
+            Time.fixedDeltaTime *= slowMotion;
+            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer);
+            StartCoroutine(KnockBackTimerSpike(enemyPos, enemy));
+        }
 
     }
 
@@ -301,13 +319,11 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator KnockBackTimer(GameObject enemy)
     {
-        yield return new WaitForSeconds(.1f);
-        anim.SetBool("isHurt", true);
+        yield return new WaitForSeconds(.02f);
         Time.timeScale = 1;
         Time.fixedDeltaTime = fixedTime;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(.5f);
         isKnockBack = false;
-
         anim.SetBool("isHurt", false);
         yield return new WaitForSeconds(.3f);
         if (enemy != null)
@@ -317,19 +333,42 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    IEnumerator KnockBackTimerSpike()
+    IEnumerator KnockBackTimerSpike(Vector3 enemyPos, GameObject enemy)
     {
-        yield return new WaitForSeconds(.1f);
-        anim.SetBool("isHurt", true);
+        Vector2 knockBackDir = transform.position - enemyPos;
+        knockBackDir.Normalize();
+        rb.AddForce(knockBackDir * 5, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(.02f);
         Time.timeScale = 1;
         Time.fixedDeltaTime = fixedTime;
-        yield return new WaitForSeconds(0.2f);
+        spikeHurt.SetActive(true);
+        yield return new WaitForSeconds(0.7f);
         isKnockBack = false;
-
-        yield return new WaitForSeconds(.3f);
         anim.SetBool("isHurt", false);
+        spikeHurt.SetActive(false);
+        transform.position = exitGroundPos;
+        if (enemy != null)
+        {
+            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
 
+        }
 
+    }
+    void Protection()
+    {
+        protection.SetActive(true);
+        Physics2D.IgnoreLayerCollision(7, 9);
+        Physics2D.IgnoreLayerCollision(7, 6);
+        Physics2D.IgnoreLayerCollision(7, 11);
+        StartCoroutine(ProtectionTimer());
+    }
+    IEnumerator ProtectionTimer()
+    {
+        yield return new WaitForSeconds(5);
+        Physics2D.IgnoreLayerCollision(7, 9, false);
+        Physics2D.IgnoreLayerCollision(7, 6, false);
+        Physics2D.IgnoreLayerCollision(7, 11, false);
+        protection.SetActive(false);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -354,7 +393,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Spike")
         {
             UpdateHealth(-1);
-            KnockBackSpike(collision.transform.position);
+            KnockBackSpike(collision.transform.position, collision.gameObject);
 
         }
         if (collision.gameObject.tag == "Laser")
@@ -378,6 +417,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Ground")
         {
             anim.SetBool("Grounded", false);
+
         }
         if (other.gameObject.tag == "Platform")
         {
@@ -394,8 +434,16 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.tag == "Heal")
         {
-            UpdateHealth(1);
-            Destroy(other.gameObject);
+            if (playerHealthSc.health <= playerHealthSc.maxHealth - 1)
+            {
+                UpdateHealth(1);
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                Destroy(other.gameObject);
+                Protection();
+            }
         }
         if (other.gameObject.tag == "NextLevel")
         {
@@ -411,9 +459,29 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.tag == "DeathArea")
         {
-            SceneManager.LoadScene(playerDataSc.currentScene);
+            UpdateHealth(-1);
+            spikeHurt.SetActive(true);
+            isKnockBack = true;
+            if (playerHealthSc.health > 0)
+            {
+                StartCoroutine(DeathAreaTimer());
+            }
+
+        }
+        if (other.gameObject.tag == "SafetyArea")
+        {
+            exitGroundPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         }
 
+    }
+    IEnumerator DeathAreaTimer()
+    {
+
+        yield return new WaitForSeconds(.2f);
+        transform.position = exitGroundPos;
+        yield return new WaitForSeconds(.7f);
+        spikeHurt.SetActive(false);
+        isKnockBack = false;
     }
     private void OnTriggerExit2D(Collider2D other)
     {

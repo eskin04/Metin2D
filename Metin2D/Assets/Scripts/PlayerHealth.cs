@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public int health;
-    [SerializeField] int maxHealth;
+    public int maxHealth;
     GameObject[] healthImgs;
     // Start is called before the first frame update
     void Start()

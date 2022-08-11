@@ -23,6 +23,7 @@ TagManager:
   - CameraObj
   - coinText
   - HealthImg
+  - SafetyArea
   layers:
   - Default
   - TransparentFX
