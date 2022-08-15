@@ -113,6 +113,7 @@ public class BossController : MonoBehaviour
     void KillBoss()
     {
         StopAllCoroutines();
+        Physics2D.IgnoreLayerCollision(9, 7);
         StartCoroutine(LightTimer());
         isBossDie = true;
         if (rb.bodyType == RigidbodyType2D.Static)
@@ -171,7 +172,7 @@ public class BossController : MonoBehaviour
     {
         swordManScript.ArrowPowerStart();
         lightBoss.intensity = firstLight;
-        transform.position = new Vector3(-1.3f, 6, 0);
+        transform.position = new Vector3(-1.3f, 7, 0);
         rb.bodyType = RigidbodyType2D.Static;
         yield return new WaitForSeconds(.6f);
         ArrowAttack();

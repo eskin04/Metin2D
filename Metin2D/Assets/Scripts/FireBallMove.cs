@@ -24,18 +24,18 @@ public class FireBallMove : MonoBehaviour
         sprite.enabled = false;
         explosion.SetActive(true);
         StartCoroutine(DestroyTime());
-        
+
     }
     IEnumerator DestroyTime()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.25f);
         Destroy(gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!isDestroy)
+        if (!isDestroy)
         {
             rb.velocity = Vector2.right * speed * gameObject.transform.localScale.x;
 
@@ -43,7 +43,7 @@ public class FireBallMove : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Wall")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Wall")
         {
             DestroyObject();
         }
@@ -52,7 +52,7 @@ public class FireBallMove : MonoBehaviour
             collision.gameObject.GetComponent<SecretPlace>().DestroyPlace(-2);
             DestroyObject();
         }
-        if(collision.gameObject.tag=="Enemy")
+        if (collision.gameObject.tag == "Enemy")
         {
             collision.gameObject.GetComponent<Enemy>().TakeDamage(1);
             DestroyObject();

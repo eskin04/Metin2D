@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,20 +15,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float upSpeed;
     [SerializeField] float slowMotion;
     [SerializeField] int fireBallCount;
-
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
-    [SerializeField] GameObject ladderGround;
+    [SerializeField] Collider2D ladderGround;
     [SerializeField] GameObject dashWind;
     [SerializeField] GameObject fireBallPref;
-    [SerializeField] GameObject spikeHurt;
     [SerializeField] GameObject protection;
-    [SerializeField] TextMeshProUGUI fireBallText;
-
+    [SerializeField] CanvasManager canvasManager;
+    PlayerSound playerSound;
     PlayerData playerDataSc;
     PlayerHealth playerHealthSc;
-    TextMeshProUGUI coinText;
     Rigidbody2D platformRb;
     BoxCollider2D boxCollider;
     Vector3 exitGroundPos;
@@ -52,21 +48,23 @@ public class PlayerController : MonoBehaviour
     {
         playerDataSc = GetComponent<PlayerData>();
         playerHealthSc = GetComponent<PlayerHealth>();
+        playerSound = GetComponent<PlayerSound>();
         Physics2D.IgnoreLayerCollision(7, 9, false);
         Physics2D.IgnoreLayerCollision(7, 6, false);
         Physics2D.IgnoreLayerCollision(7, 11, false);
         firstGravityScale = rb.gravityScale;
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         fixedTime = Time.fixedDeltaTime;
-        coinText ??= GameObject.FindGameObjectWithTag("coinText").GetComponent<TextMeshProUGUI>();
-        CoinUpdate(0);
-        fireBallText.text = fireBallCount.ToString();
-
+        if (canvasManager)
+        {
+            CoinUpdate(0);
+            canvasManager.FireBallText(fireBallCount);
+        }
     }
     public void CoinUpdate(float coin)
     {
         playerDataSc.totalCoin += coin;
-        coinText.text = playerDataSc.totalCoin.ToString();
+        canvasManager.CoinText(playerDataSc.totalCoin);
     }
 
     // Update is called once per frame
@@ -77,32 +75,67 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("AirSpeed", rb.velocity.y);
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
+
+            //When Player climb or move down at a ladder
             if (isInLadder)
             {
                 UpAndDown(verticalInput);
             }
+
+            // Player right and left move
             if (!isKnockBack && !isDash)
             {
                 Move(horizontalInput);
             }
 
+
+            //PlayerJump
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isDash && !isKnockBack)
             {
                 Jump();
             }
-            if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
+
+
+            //PlayerUpAttack
+            if (Input.GetKey(KeyCode.W))
             {
-                anim.SetTrigger("Attack");
+                attackPos.localPosition = new Vector3(0, 0.52f, attackPos.position.z);
+
+                if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
+                {
+                    anim.SetTrigger("attackUp");
+
+                }
             }
+
+            //PlayerAttack
+            else
+            {
+                attackPos.localPosition = new Vector3(1.12f, -0.13f, attackPos.position.z);
+                if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
+                {
+                    anim.SetTrigger("Attack");
+                }
+
+            }
+
+
+            //When player has no health
             if (playerHealthSc.health <= 0)
             {
                 GameOver();
             }
+
+
+            //PlayerDash
             if (Input.GetMouseButtonDown(1) && !dashCoolDown && !isKnockBack)
             {
                 dashCoolDown = true;
                 Dash();
             }
+
+
+            //Player throw fireBall to left or right
             if (Input.GetKeyDown(KeyCode.E) && Time.time >= nextAttackTime && fireBallCount > 0)
             {
                 anim.SetTrigger("FireBall");
@@ -176,12 +209,13 @@ public class PlayerController : MonoBehaviour
         fireBallPref.transform.localScale = transform.localScale;
         Instantiate(fireBallPref, playerPos, Quaternion.identity);
         fireBallCount--;
-        fireBallText.text = fireBallCount.ToString();
+        canvasManager.FireBallText(fireBallCount);
 
     }
     void Attack()
     {
         nextAttackTime = Time.time + 1f / attackRate;
+        playerSound.AttackSound();
 
         // find enemies in range
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Enemy"));
@@ -271,6 +305,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         isGrounded = false;
+        playerSound.JumpSound();
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         anim.SetTrigger("Jump");
     }
@@ -284,6 +319,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerHealthSc.health > 0)
         {
+            playerSound.HurtSound();
             isKnockBack = true;
             anim.SetTrigger("Hurt");
             anim.SetBool("isHurt", true);
@@ -304,6 +340,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerHealthSc.health > 0)
         {
+            playerSound.HurtSound();
             isKnockBack = true;
             anim.SetTrigger("Hurt");
             anim.SetBool("isHurt", true);
@@ -341,11 +378,11 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.02f);
         Time.timeScale = 1;
         Time.fixedDeltaTime = fixedTime;
-        spikeHurt.SetActive(true);
+        canvasManager.SpikeHurtActive();
         yield return new WaitForSeconds(0.7f);
         isKnockBack = false;
         anim.SetBool("isHurt", false);
-        spikeHurt.SetActive(false);
+        canvasManager.SpikeHurtInactive();
         transform.position = exitGroundPos;
         if (enemy != null)
         {
@@ -398,7 +435,7 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.tag == "Laser")
         {
-            UpdateHealth(-2);
+            UpdateHealth(-1);
             KnockBack(collision.transform.position, collision.gameObject);
         }
         if (collision.gameObject.tag == "Bullet")
@@ -454,13 +491,13 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Ladder")
         {
             isInLadder = true;
-            ladderGround.GetComponent<Collider2D>().enabled = false;
+            ladderGround.enabled = false;
 
         }
         if (other.gameObject.tag == "DeathArea")
         {
             UpdateHealth(-1);
-            spikeHurt.SetActive(true);
+            canvasManager.SpikeHurtActive();
             isKnockBack = true;
             if (playerHealthSc.health > 0)
             {
@@ -470,7 +507,7 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.tag == "SafetyArea")
         {
-            exitGroundPos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            exitGroundPos = new Vector3(transform.position.x, other.gameObject.transform.position.y, transform.position.z);
         }
 
     }
@@ -480,7 +517,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         transform.position = exitGroundPos;
         yield return new WaitForSeconds(.7f);
-        spikeHurt.SetActive(false);
+        canvasManager.SpikeHurtInactive();
         isKnockBack = false;
     }
     private void OnTriggerExit2D(Collider2D other)
@@ -491,7 +528,7 @@ public class PlayerController : MonoBehaviour
             rb.gravityScale = firstGravityScale;
             anim.SetBool("Grounded", true);
             isGrounded = true;
-            ladderGround.GetComponent<Collider2D>().enabled = true;
+            ladderGround.enabled = true;
 
         }
     }

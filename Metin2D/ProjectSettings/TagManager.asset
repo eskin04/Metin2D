@@ -24,6 +24,7 @@ TagManager:
   - coinText
   - HealthImg
   - SafetyArea
+  - SpikeHurtPanel
   layers:
   - Default
   - TransparentFX
