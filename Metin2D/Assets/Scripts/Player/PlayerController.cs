@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float attackRate;
     [SerializeField] float upSpeed;
     [SerializeField] float slowMotion;
+    [SerializeField] float downAttackForce;
     [SerializeField] int fireBallCount;
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
@@ -32,14 +33,18 @@ public class PlayerController : MonoBehaviour
     bool isGrounded = true;
     float nextAttackTime;
     public bool isKnockBack;
+    public bool isInLadder;
     bool isDash;
     bool dashCoolDown;
     int isLookRight;
     float firstGravityScale;
     float fixedTime;
-    bool isInLadder;
     bool isOnPlatform;
     bool isGameOver;
+    bool isProtection;
+    bool isIgnoreLayer;
+    float waitLayerTime;
+    bool isDownAttack;
 
 
 
@@ -49,9 +54,7 @@ public class PlayerController : MonoBehaviour
         playerDataSc = GetComponent<PlayerData>();
         playerHealthSc = GetComponent<PlayerHealth>();
         playerSound = GetComponent<PlayerSound>();
-        Physics2D.IgnoreLayerCollision(7, 9, false);
-        Physics2D.IgnoreLayerCollision(7, 6, false);
-        Physics2D.IgnoreLayerCollision(7, 11, false);
+        IgnoreLayerFalse();
         firstGravityScale = rb.gravityScale;
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         fixedTime = Time.fixedDeltaTime;
@@ -66,6 +69,12 @@ public class PlayerController : MonoBehaviour
         playerDataSc.totalCoin += coin;
         canvasManager.CoinText(playerDataSc.totalCoin);
     }
+    void IgnoreLayerFalse()
+    {
+        Physics2D.IgnoreLayerCollision(7, 9, false);
+        Physics2D.IgnoreLayerCollision(7, 6, false);
+        Physics2D.IgnoreLayerCollision(7, 11, false);
+    }
 
     // Update is called once per frame
     void Update()
@@ -75,6 +84,24 @@ public class PlayerController : MonoBehaviour
             anim.SetFloat("AirSpeed", rb.velocity.y);
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
+
+            // After KnockBack set LayerCollision to false
+            if (!isProtection && (Physics2D.GetIgnoreLayerCollision(7, 9) || Physics2D.GetIgnoreLayerCollision(7, 6) || Physics2D.GetIgnoreLayerCollision(7, 11)))
+            {
+
+                if (!isIgnoreLayer)
+                {
+                    waitLayerTime = Time.time;
+                    isIgnoreLayer = true;
+                }
+                if (Time.time >= waitLayerTime + .82f && isIgnoreLayer)
+                {
+                    IgnoreLayerFalse();
+                    isIgnoreLayer = false;
+
+
+                }
+            }
 
             //When Player climb or move down at a ladder
             if (isInLadder)
@@ -107,7 +134,18 @@ public class PlayerController : MonoBehaviour
 
                 }
             }
+            //PlayerDownAttack
+            else if (Input.GetKey(KeyCode.S))
+            {
+                attackPos.localPosition = new Vector3(0, -2f, attackPos.position.z);
 
+                if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime)
+                {
+                    isDownAttack = true;
+                    anim.SetTrigger("attackDown");
+
+                }
+            }
             //PlayerAttack
             else
             {
@@ -140,9 +178,15 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetTrigger("FireBall");
             }
+
         }
 
     }
+    public void DownAttackFalse()
+    {
+        isDownAttack = false;
+    }
+
     void Dash()
     {
         isDash = true;
@@ -222,6 +266,10 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D enemy in enemies)
         {
             enemy.GetComponent<Enemy>().TakeDamage(1);
+            if (isDownAttack && !isKnockBack)
+            {
+                rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
+            }
         }
 
         // find boss
@@ -232,6 +280,11 @@ public class PlayerController : MonoBehaviour
             if (boss.gameObject.tag == "Boss" && boss != null)
             {
                 boss.GetComponent<BossController>().TakeBossDamage(1);
+            }
+            if (isDownAttack && !isKnockBack)
+            {
+                rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
+
 
             }
         }
@@ -257,6 +310,14 @@ public class PlayerController : MonoBehaviour
             if (place != null)
             {
                 place.GetComponent<SecretPlace>().DestroyPlace(-1);
+            }
+        }
+        Collider2D[] spears = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Spear"));
+        foreach (Collider2D spear in spears)
+        {
+            if (spear != null && isDownAttack && !isKnockBack)
+            {
+                rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
             }
         }
 
@@ -326,7 +387,11 @@ public class PlayerController : MonoBehaviour
 
             Vector2 knockBackDir = transform.position - enemyPos;
             knockBackDir.Normalize();
-            rb.AddForce(knockBackDir * 3, ForceMode2D.Impulse);
+            if (!isDownAttack)
+            {
+                rb.AddForce(knockBackDir * 3, ForceMode2D.Impulse);
+
+            }
 
             Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer);
 
@@ -362,19 +427,17 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isKnockBack = false;
         anim.SetBool("isHurt", false);
-        yield return new WaitForSeconds(.3f);
-        if (enemy != null)
-        {
-            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
-
-        }
 
     }
     IEnumerator KnockBackTimerSpike(Vector3 enemyPos, GameObject enemy)
     {
         Vector2 knockBackDir = transform.position - enemyPos;
         knockBackDir.Normalize();
-        rb.AddForce(knockBackDir * 5, ForceMode2D.Impulse);
+        if (!isDownAttack)
+        {
+            rb.AddForce(knockBackDir * 5, ForceMode2D.Impulse);
+
+        }
         yield return new WaitForSeconds(.02f);
         Time.timeScale = 1;
         Time.fixedDeltaTime = fixedTime;
@@ -384,15 +447,11 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isHurt", false);
         canvasManager.SpikeHurtInactive();
         transform.position = exitGroundPos;
-        if (enemy != null)
-        {
-            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
-
-        }
 
     }
     void Protection()
     {
+        isProtection = true;
         protection.SetActive(true);
         Physics2D.IgnoreLayerCollision(7, 9);
         Physics2D.IgnoreLayerCollision(7, 6);
@@ -402,10 +461,9 @@ public class PlayerController : MonoBehaviour
     IEnumerator ProtectionTimer()
     {
         yield return new WaitForSeconds(5);
-        Physics2D.IgnoreLayerCollision(7, 9, false);
-        Physics2D.IgnoreLayerCollision(7, 6, false);
-        Physics2D.IgnoreLayerCollision(7, 11, false);
+        IgnoreLayerFalse();
         protection.SetActive(false);
+        isProtection = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
