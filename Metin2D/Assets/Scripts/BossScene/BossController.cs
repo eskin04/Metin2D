@@ -21,11 +21,13 @@ public class BossController : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject arrow;
     [SerializeField] HealthBar healthBar;
+    [SerializeField] AudioSource introMusic;
     Light2D lightBoss;
     float firstLight;
     SwordManAnim swordManScript;
     Animator anim;
     Vector2 direction;
+    PlayerController playerSc;
     float time;
     float localScaleX;
     float prevRandom;
@@ -39,9 +41,11 @@ public class BossController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        introMusic.Pause();
         maxHealth = health;
         powerTime = 2;
         rb = GetComponent<Rigidbody2D>();
+        playerSc = player.GetComponent<PlayerController>();
         localScaleX = transform.localScale.x;
         direction = (player.transform.position - bossGround.position).normalized;
         time = Time.time + 2;
@@ -113,6 +117,7 @@ public class BossController : MonoBehaviour
     void KillBoss()
     {
         StopAllCoroutines();
+        playerSc.isBossDie = true;
         Physics2D.IgnoreLayerCollision(9, 7);
         StartCoroutine(LightTimer());
         isBossDie = true;

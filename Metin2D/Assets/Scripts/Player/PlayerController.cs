@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     bool isGrounded = true;
     float nextAttackTime;
     public bool isKnockBack;
+    public bool isBossDie;
     public bool isInLadder;
     bool isDash;
     bool dashCoolDown;
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
             float verticalInput = Input.GetAxis("Vertical");
 
             // After KnockBack set LayerCollision to false
-            if (!isProtection && (Physics2D.GetIgnoreLayerCollision(7, 9) || Physics2D.GetIgnoreLayerCollision(7, 6) || Physics2D.GetIgnoreLayerCollision(7, 11)))
+            if (!isGameOver && !isBossDie && !isProtection && (Physics2D.GetIgnoreLayerCollision(7, 9) || Physics2D.GetIgnoreLayerCollision(7, 6) || Physics2D.GetIgnoreLayerCollision(7, 11)))
             {
 
                 if (!isIgnoreLayer)
@@ -190,6 +191,7 @@ public class PlayerController : MonoBehaviour
     void Dash()
     {
         isDash = true;
+        playerSound.DashSound();
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
         rb.AddForce(Vector2.right * isLookRight * dashForce, ForceMode2D.Impulse);
@@ -259,13 +261,15 @@ public class PlayerController : MonoBehaviour
     void Attack()
     {
         nextAttackTime = Time.time + 1f / attackRate;
-        playerSound.AttackSound();
+        bool isNull = true;
 
         // find enemies in range
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Enemy"));
         foreach (Collider2D enemy in enemies)
         {
             enemy.GetComponent<Enemy>().TakeDamage(1);
+            playerSound.AttackEnemySound();
+            isNull = false;
             if (isDownAttack && !isKnockBack)
             {
                 rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
@@ -277,14 +281,17 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D boss in bosses)
         {
 
+            playerSound.AttackEnemySound();
+            isNull = false;
+
             if (boss.gameObject.tag == "Boss" && boss != null)
             {
                 boss.GetComponent<BossController>().TakeBossDamage(1);
+
             }
             if (isDownAttack && !isKnockBack)
             {
                 rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
-
 
             }
         }
@@ -293,6 +300,8 @@ public class PlayerController : MonoBehaviour
         Collider2D[] chests = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Chest"));
         foreach (Collider2D chest in chests)
         {
+            isNull = false;
+
             // if chest is close, open it
             if (chest.GetComponent<Chest>().isOpen == false)
             {
@@ -310,6 +319,8 @@ public class PlayerController : MonoBehaviour
             if (place != null)
             {
                 place.GetComponent<SecretPlace>().DestroyPlace(-1);
+                isNull = false;
+
             }
         }
         Collider2D[] spears = Physics2D.OverlapCircleAll(attackPos.position, attackRange, LayerMask.GetMask("Spear"));
@@ -318,7 +329,14 @@ public class PlayerController : MonoBehaviour
             if (spear != null && isDownAttack && !isKnockBack)
             {
                 rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
+                playerSound.AttackSpearSound();
+                isNull = false;
+
             }
+        }
+        if (isNull)
+        {
+            playerSound.AttackSound();
         }
 
     }
@@ -351,6 +369,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             anim.SetInteger("AnimState", 0);
+            playerSound.StopWalkSound();
         }
         if (horizontalInput < 0)
         {

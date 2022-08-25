@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject newGameButton;
     [SerializeField] GameObject gamePanel;
     [SerializeField] TextMeshProUGUI startText;
+    [SerializeField] AudioSource background;
+    [SerializeField] AudioSource menuMusic;
 
     Animator anim;
     // Start is called before the first frame update
@@ -34,6 +36,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1;
+        menuMusic.Pause();
+        background.Play();
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
         player.SetActive(true);
