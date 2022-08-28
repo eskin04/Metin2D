@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI startText;
     [SerializeField] AudioSource background;
     [SerializeField] AudioSource menuMusic;
+    [SerializeField] AudioClip buttonSound;
+    [SerializeField] AudioClip clickSound;
+    AudioSource audioSource;
 
     Animator anim;
     // Start is called before the first frame update
@@ -25,6 +28,7 @@ public class GameManager : MonoBehaviour
             newGameButton.SetActive(true);
             startText.text = "Load Game";
         }
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -53,6 +57,14 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void SoundButtons()
+    {
+        audioSource.PlayOneShot(buttonSound, .5f);
+    }
+    public void ClickSound()
+    {
+        audioSource.PlayOneShot(clickSound);
     }
 
 }

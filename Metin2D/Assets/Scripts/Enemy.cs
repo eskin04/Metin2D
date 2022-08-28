@@ -5,12 +5,14 @@ using UnityEngine.Rendering.Universal;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] float health;
+    public float health;
     [SerializeField] GameObject coinPrefab;
     [SerializeField] GameObject deathPrefab;
+    [SerializeField] AudioClip hurtSound;
     public float enemiesSpeed;
     public float firstSpeed;
     bool isDead;
+    AudioSource audioSource;
     SpriteRenderer sprite;
     Color firstColor;
     Color colorRed;
@@ -21,6 +23,7 @@ public class Enemy : MonoBehaviour
     {
         firstSpeed = enemiesSpeed;
         sprite=GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
         childLight = transform.Find("Light 2D").GetComponent<Light2D>();
         firstLight = childLight.intensity;
         hitLight = firstLight*3;
@@ -31,7 +34,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        
+        audioSource.PlayOneShot(hurtSound);
         health -= damage;
         Transform playerPos = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         Vector3 direct = (playerPos.position - transform.position).normalized;

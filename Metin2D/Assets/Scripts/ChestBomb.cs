@@ -7,6 +7,8 @@ public class ChestBomb : MonoBehaviour
     [SerializeField] float range;
     [SerializeField] float waitTime;
     [SerializeField] GameObject explode;
+    [SerializeField] AudioSource sourceExplode;
+    [SerializeField] AudioSource sourceCountDown;
     SpriteRenderer sprite;
     Collider2D hit;
     Collider2D hitEnemy;
@@ -21,10 +23,10 @@ public class ChestBomb : MonoBehaviour
     void Update()
     {
         hit = Physics2D.OverlapCircle(transform.position, range, LayerMask.GetMask("Player"));
-        hitEnemy  = Physics2D.OverlapCircle(transform.position, range, LayerMask.GetMask("Enemy"));
+        hitEnemy = Physics2D.OverlapCircle(transform.position, range, LayerMask.GetMask("Enemy"));
         if (!coolDown)
         {
-            
+
             StartCoroutine(Explode());
         }
 
@@ -32,22 +34,28 @@ public class ChestBomb : MonoBehaviour
     IEnumerator Explode()
     {
         coolDown = true;
+
         yield return new WaitForSeconds(waitTime);
-        if(hit!=null)
+        if (hit != null)
         {
-           hit.GetComponent<PlayerController>().UpdateHealth(-2);
-           hit.GetComponent<PlayerController>().KnockBack(transform.position,gameObject);
+            hit.GetComponent<PlayerController>().UpdateHealth(-2);
+            hit.GetComponent<PlayerController>().KnockBack(transform.position, gameObject);
         }
-        if(hitEnemy!= null)
+        if (hitEnemy != null)
         {
             hitEnemy.GetComponent<Enemy>().TakeDamage(2);
         }
         explode.SetActive(true);
         sprite.enabled = false;
+
+        sourceCountDown.Stop();
+        sourceExplode.Play();
+
         yield return new WaitForSeconds(.5f);
         Destroy(gameObject);
     }
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         Gizmos.DrawWireSphere(transform.position, range);
     }
 }

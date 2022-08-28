@@ -10,35 +10,50 @@ public class PlayerSound : MonoBehaviour
     [SerializeField] AudioClip dashSound;
     [SerializeField] AudioClip jumpSound;
     [SerializeField] AudioClip hurtSound;
-    [SerializeField] AudioSource audioSourceLow;
-    [SerializeField] AudioSource audioSourceHigh;
+    [SerializeField] AudioClip coinSound;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip fireBall;
+    [SerializeField] AudioSource audioSource;
     [SerializeField] AudioSource audioSourceWalk;
+
 
     public void AttackSound()
     {
-        audioSourceLow.PlayOneShot(attackSound);
+        audioSource.pitch = .5f;
+        audioSource.PlayOneShot(attackSound, .3f);
     }
     public void JumpSound()
     {
-        audioSourceHigh.PlayOneShot(jumpSound);
+        audioSource.pitch = 1.2f;
+        audioSource.PlayOneShot(jumpSound);
 
     }
     public void HurtSound()
     {
-        audioSourceHigh.PlayOneShot(hurtSound);
+        audioSource.pitch = 1.1f;
+        audioSource.PlayOneShot(hurtSound, .3f);
+
+    }
+    public void DieSound()
+    {
+        audioSource.pitch = 1.1f;
+        audioSource.PlayOneShot(deathSound, .5f);
 
     }
     public void AttackEnemySound()
     {
-        audioSourceHigh.PlayOneShot(attackEnemySound);
+        audioSource.pitch = 1.2f;
+        audioSource.PlayOneShot(attackEnemySound);
     }
     public void AttackSpearSound()
     {
-        audioSourceLow.PlayOneShot(attackSpearSound);
+        audioSource.pitch = .5f;
+        audioSource.PlayOneShot(attackSpearSound, .3f);
     }
     public void DashSound()
     {
-        audioSourceLow.PlayOneShot(dashSound);
+        audioSource.pitch = .5f;
+        audioSource.PlayOneShot(dashSound, .3f);
     }
     public void WalkSound()
     {
@@ -47,5 +62,15 @@ public class PlayerSound : MonoBehaviour
     public void StopWalkSound()
     {
         audioSourceWalk.Stop();
+    }
+    public void CoinSound()
+    {
+        audioSource.pitch = 1.2f;
+        audioSource.PlayOneShot(coinSound, .3f);
+    }
+    public void FireBallSound()
+    {
+        audioSource.pitch = .9f;
+        audioSource.PlayOneShot(fireBall, .5f);
     }
 }

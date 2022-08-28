@@ -9,17 +9,18 @@ public class bombMove : MonoBehaviour
     PlayerController playerScript;
     [SerializeField] float attackRange;
     [SerializeField] GameObject explodeParticle;
-
+    [SerializeField] AudioSource sourceExplode;
+    [SerializeField] AudioSource sourceCountDown;
     Collider2D player;
     Collider2D enemy;
     bool coolDown;
     // Start is called before the first frame update
     void Start()
     {
-            rb= GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         attackPos = GameObject.Find("PlayerHead").transform;
         playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-        
+
 
     }
 
@@ -28,45 +29,66 @@ public class bombMove : MonoBehaviour
     {
         player = Physics2D.OverlapCircle(transform.position, attackRange, LayerMask.GetMask("Player"));
         enemy = Physics2D.OverlapCircle(transform.position, attackRange, LayerMask.GetMask("Enemy"));
-        Vector3 direction= attackPos.position - transform.position;
+        Vector3 direction = attackPos.position - transform.position;
         direction.Normalize();
-        rb.velocity = direction*3;
-        
-        if(!coolDown)
+        rb.velocity = direction * 3;
+
+        if (!coolDown)
         {
             StartCoroutine(coolDownTimer());
+
         }
-        
+
 
     }
     IEnumerator coolDownTimer()
     {
         coolDown = true;
         yield return new WaitForSeconds(2);
-        if(player!=null){
+        if (player != null)
+        {
             playerScript.UpdateHealth(-2);
-            playerScript.KnockBack(transform.position,gameObject);
+            playerScript.KnockBack(transform.position, gameObject);
         }
-        if(enemy!=null)
+        if (enemy != null)
         {
             enemy.GetComponent<Enemy>().TakeDamage(2);
         }
         explodeParticle.SetActive(true);
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        if (gameObject != null && sourceExplode.isPlaying == false)
+        {
+            sourceCountDown.Stop();
+            sourceExplode.Play();
+        }
+        {
+
+            sourceCountDown.Stop();
+            sourceExplode.Play();
+        }
         yield return new WaitForSeconds(.5f);
-        if(gameObject!=null)
+        if (gameObject != null)
         {
             Destroy(gameObject);
         }
-        
+
     }
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
-    private void OnCollisionEnter2D(Collision2D other) {
-        if(other.gameObject.tag=="Player"){
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            StopAllCoroutines();
+            if (sourceExplode.isPlaying == false)
+            {
+                sourceCountDown.Stop();
+                sourceExplode.Play();
+            }
             playerScript.UpdateHealth(-2);
-            playerScript.KnockBack(transform.position,gameObject);
+            playerScript.KnockBack(transform.position, gameObject);
             explodeParticle.SetActive(true);
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
             StartCoroutine(hitCoolDown());

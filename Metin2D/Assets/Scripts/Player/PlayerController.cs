@@ -68,6 +68,10 @@ public class PlayerController : MonoBehaviour
     public void CoinUpdate(float coin)
     {
         playerDataSc.totalCoin += coin;
+        if (coin > 0)
+        {
+            playerSound.CoinSound();
+        }
         canvasManager.CoinText(playerDataSc.totalCoin);
     }
     void IgnoreLayerFalse()
@@ -75,6 +79,7 @@ public class PlayerController : MonoBehaviour
         Physics2D.IgnoreLayerCollision(7, 9, false);
         Physics2D.IgnoreLayerCollision(7, 6, false);
         Physics2D.IgnoreLayerCollision(7, 11, false);
+        Physics2D.IgnoreLayerCollision(7, 16, false);
     }
 
     // Update is called once per frame
@@ -87,7 +92,7 @@ public class PlayerController : MonoBehaviour
             float verticalInput = Input.GetAxis("Vertical");
 
             // After KnockBack set LayerCollision to false
-            if (!isGameOver && !isBossDie && !isProtection && (Physics2D.GetIgnoreLayerCollision(7, 9) || Physics2D.GetIgnoreLayerCollision(7, 6) || Physics2D.GetIgnoreLayerCollision(7, 11)))
+            if (!isGameOver && !isBossDie && !isProtection && (Physics2D.GetIgnoreLayerCollision(7, 9) || Physics2D.GetIgnoreLayerCollision(7, 6) || Physics2D.GetIgnoreLayerCollision(7, 11) || Physics2D.GetIgnoreLayerCollision(7, 16)))
             {
 
                 if (!isIgnoreLayer)
@@ -212,7 +217,10 @@ public class PlayerController : MonoBehaviour
     }
     void GameOver()
     {
+        playerSound.DieSound();
         rb.velocity = Vector3.zero;
+        Time.timeScale = .5f;
+        Time.fixedDeltaTime *= .5f;
         isGameOver = true;
         anim.SetTrigger("Die");
         StartCoroutine(WaitGameOver());
@@ -250,6 +258,7 @@ public class PlayerController : MonoBehaviour
     }
     void FireBall()
     {
+        playerSound.FireBallSound();
         Vector2 playerPos = new Vector2(transform.position.x, transform.position.y - .5f);
         nextAttackTime = Time.time + 1f / attackRate;
         fireBallPref.transform.localScale = transform.localScale;
@@ -446,7 +455,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isKnockBack = false;
         anim.SetBool("isHurt", false);
-
+        if(enemy != null)
+        {
+            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
+        }
     }
     IEnumerator KnockBackTimerSpike(Vector3 enemyPos, GameObject enemy)
     {
@@ -466,6 +478,10 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isHurt", false);
         canvasManager.SpikeHurtInactive();
         transform.position = exitGroundPos;
+        if (enemy != null)
+        {
+            Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
+        }
 
     }
     void Protection()

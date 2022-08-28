@@ -9,6 +9,8 @@ public class JumpEnemyMove : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] Transform jumpPoint;
     [SerializeField] float jumpSpeed;
+    [SerializeField] AudioClip attackSound;
+    AudioSource audioSource;
     Animator anim;
     Enemy enemy;
     EnemyMove enemyMove;
@@ -23,6 +25,7 @@ public class JumpEnemyMove : MonoBehaviour
         enemy = GetComponent<Enemy>();
         enemyMove = GetComponent<EnemyMove>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -31,15 +34,17 @@ public class JumpEnemyMove : MonoBehaviour
         Collider2D hitPlayer = Physics2D.OverlapCircle(jumpPoint.position, attackRange, LayerMask.GetMask("Player"));
         if (hitPlayer != null)
         {
-            if (isGround && Time.time >=time)
+            if (isGround && Time.time >= time)
             {
+                audioSource.PlayOneShot(attackSound, .5f);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 anim.SetTrigger("isPlayer");
                 isGround = false;
                 enemy.enemiesSpeed = jumpSpeed;
-                time =coolDown + Time.time;
+                time = coolDown + Time.time;
             }
         }
+
     }
     private void OnDrawGizmos()
     {

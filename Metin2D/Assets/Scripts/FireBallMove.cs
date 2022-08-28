@@ -5,6 +5,7 @@ using UnityEngine;
 public class FireBallMove : MonoBehaviour
 {
     [SerializeField] float speed;
+    AudioSource source;
     GameObject explosion;
     SpriteRenderer sprite;
     Rigidbody2D rb;
@@ -13,12 +14,14 @@ public class FireBallMove : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        source = GetComponent<AudioSource>();
         sprite = GetComponent<SpriteRenderer>();
         Destroy(gameObject, 3);
         explosion = transform.Find("explosion").gameObject;
     }
     void DestroyObject()
     {
+        source.Play();
         isDestroy = true;
         rb.velocity = Vector2.zero;
         sprite.enabled = false;

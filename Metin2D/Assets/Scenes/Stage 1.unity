@@ -288,25 +288,6 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!1 &138185899 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2845339563734776988, guid: 3c1b76c372da04f4c945b0202f688b16, type: 3}
-  m_PrefabInstance: {fileID: 5138625443733744793}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &138185903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 138185899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2529e03317988d442a12d27a56b7b559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOpen: 0
-  item: {fileID: 5384036908290149974, guid: 3b45c9f39cfa86849b0b3ca1d503bb8b, type: 3}
 --- !u!1 &154359852
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,11 +335,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &162029659 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7813672582072352440, guid: 95b38fdc7204fc04090c68da61a93b6c, type: 3}
-  m_PrefabInstance: {fileID: 2098961939}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &166713261 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4069658050218058290, guid: 67cd59d3526fcd34a9b55a6fb5186a41, type: 3}
@@ -629,6 +605,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 318396680}
     m_Modifications:
+    - target: {fileID: 351204132905604521, guid: 56e2a525e0fbd93419c9b313c362934d, type: 3}
+      propertyPath: m_Volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 351204132905604521, guid: 56e2a525e0fbd93419c9b313c362934d, type: 3}
+      propertyPath: MaxDistance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 351204132905604521, guid: 56e2a525e0fbd93419c9b313c362934d, type: 3}
+      propertyPath: MinDistance
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 351204132905604521, guid: 56e2a525e0fbd93419c9b313c362934d, type: 3}
+      propertyPath: rolloffMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7602366711053158307, guid: 56e2a525e0fbd93419c9b313c362934d, type: 3}
       propertyPath: m_Name
       value: ' Fire Bowl (1)'
@@ -25524,6 +25516,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpearTrigger (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4045393973348019999, guid: a30b3898a2313714eafc9d2b7877a71f, type: 3}
+      propertyPath: m_Points.Array.data[0].y
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a30b3898a2313714eafc9d2b7877a71f, type: 3}
 --- !u!4 &929668309 stripped
@@ -25588,6 +25584,107 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8bae36b607017047ace9061609051d9, type: 3}
+--- !u!1 &968938667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6309599118117444192, guid: e8bae36b607017047ace9061609051d9, type: 3}
+  m_PrefabInstance: {fileID: 968938666}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &968938668
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968938667}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5ba1821c76cab824aada6ddff4a3d09b, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.8
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 2.5
+  MaxDistance: 10
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &988448064
 GameObject:
   m_ObjectHideFlags: 0
@@ -25829,6 +25926,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 421281554}
     m_Modifications:
+    - target: {fileID: 4069658050218058288, guid: 67cd59d3526fcd34a9b55a6fb5186a41, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 531986d6de3dd224fa21d5e136abcde8, type: 3}
     - target: {fileID: 4069658050218058290, guid: 67cd59d3526fcd34a9b55a6fb5186a41, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -27332,7 +27433,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.2
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -28286,25 +28387,6 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!1 &2083377041 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2845339565433738682, guid: 3c1b76c372da04f4c945b0202f688b16, type: 3}
-  m_PrefabInstance: {fileID: 5138625443733744793}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2083377045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2083377041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2529e03317988d442a12d27a56b7b559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOpen: 0
-  item: {fileID: 162029659}
 --- !u!1 &2086305269
 GameObject:
   m_ObjectHideFlags: 0
@@ -28806,6 +28888,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6386221860302400617, guid: 2412dc7906e428f4f83b6b8a10c6116e, type: 3}
+      propertyPath: m_Points.Array.data[0].y
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 9014348825879967598, guid: 2412dc7906e428f4f83b6b8a10c6116e, type: 3}
       propertyPath: m_Name
       value: Statue
@@ -29459,6 +29545,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpearTrigger
       objectReference: {fileID: 0}
+    - target: {fileID: 4045393973348019999, guid: a30b3898a2313714eafc9d2b7877a71f, type: 3}
+      propertyPath: m_Points.Array.data[0].y
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a30b3898a2313714eafc9d2b7877a71f, type: 3}
 --- !u!1001 &4933469946070478552
@@ -29586,6 +29676,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1572362058032985342, guid: 3c1b76c372da04f4c945b0202f688b16, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 5384036908290149974, guid: 3b45c9f39cfa86849b0b3ca1d503bb8b, type: 3}
     - target: {fileID: 5138625444889483864, guid: 3c1b76c372da04f4c945b0202f688b16, type: 3}
       propertyPath: m_Name
       value: Chests
