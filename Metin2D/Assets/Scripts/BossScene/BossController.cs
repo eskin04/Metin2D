@@ -22,9 +22,11 @@ public class BossController : MonoBehaviour
     [SerializeField] GameObject arrow;
     [SerializeField] HealthBar healthBar;
     [SerializeField] AudioSource introMusic;
+    [SerializeField] Transform attackPos;
     Light2D lightBoss;
     float firstLight;
     SwordManAnim swordManScript;
+    BossSound bossSound;
     Animator anim;
     Vector2 direction;
     PlayerController playerSc;
@@ -36,25 +38,29 @@ public class BossController : MonoBehaviour
     bool isBossDie;
     float maxHealth;
     int prevArrow;
+
     List<string> attacks = new List<string>() { "jumpAttack", "dashAttack", "shootAttack", "swordAttack" };
 
     // Start is called before the first frame update
     void Start()
     {
+
         introMusic.Pause();
+        bossSound = transform.Find("sword_man").GetComponent<BossSound>();
         maxHealth = health;
         powerTime = 2;
         rb = GetComponent<Rigidbody2D>();
         playerSc = player.GetComponent<PlayerController>();
         localScaleX = transform.localScale.x;
         direction = (player.transform.position - bossGround.position).normalized;
-        time = Time.time + 2;
+        time = Time.time + 6;
         healthBar.SetMaxHealth(health);
         prevRandom = 10;
         anim = GetComponent<Animator>();
         swordManScript = transform.Find("sword_man").GetComponent<SwordManAnim>();
         lightBoss = transform.Find("Light 2D").GetComponent<Light2D>();
         firstLight = lightBoss.intensity;
+        playerSc.isBossIntro = true;
     }
 
     // Update is called once per frame
@@ -63,6 +69,7 @@ public class BossController : MonoBehaviour
         direction = (player.transform.position - bossGround.position).normalized;
         if (Time.time >= time && !isPowerTime && !isBossDie)
         {
+            playerSc.isBossIntro = false;
             int random = Random.Range(0, attacks.Count);
             while (random == prevRandom)
             {
@@ -98,6 +105,7 @@ public class BossController : MonoBehaviour
         }
         if (health <= maxHealth / 2 && powerTime == 2)
         {
+            bossSound.ArrowAttackSound();
             powerTime -= 1;
             StopAllCoroutines();
             StartCoroutine(WaitArrow());
@@ -107,6 +115,9 @@ public class BossController : MonoBehaviour
 
         if (health <= maxHealth / 4 && powerTime == 1)
         {
+            bossSound.StopFightSound();
+            bossSound.FightSound();
+            bossSound.ArrowAttackSound();
             powerTime -= 1;
             StopAllCoroutines();
             StartCoroutine(WaitArrow());
@@ -131,12 +142,13 @@ public class BossController : MonoBehaviour
     }
     IEnumerator KillBossWait()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3.2f);
         Destroy(gameObject);
 
     }
     public void TakeBossDamage(int damage)
     {
+        bossSound.HurtSound();
         health -= damage;
         healthBar.SetHealth(health);
         lightBoss.intensity = 5;

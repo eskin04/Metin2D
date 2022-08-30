@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     float nextAttackTime;
     public bool isKnockBack;
     public bool isBossDie;
+    public bool isBossIntro;
     public bool isInLadder;
     bool isDash;
     bool dashCoolDown;
@@ -85,7 +86,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isGameOver)
+        if (!isGameOver && !isBossIntro)
         {
             anim.SetFloat("AirSpeed", rb.velocity.y);
             float horizontalInput = Input.GetAxis("Horizontal");
@@ -185,6 +186,12 @@ public class PlayerController : MonoBehaviour
                 anim.SetTrigger("FireBall");
             }
 
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+            anim.SetInteger("AnimState", 0);
+            playerSound.StopWalkSound();
         }
 
     }
@@ -290,12 +297,13 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D boss in bosses)
         {
 
-            playerSound.AttackEnemySound();
             isNull = false;
 
             if (boss.gameObject.tag == "Boss" && boss != null)
             {
                 boss.GetComponent<BossController>().TakeBossDamage(1);
+                playerSound.AttackEnemySound();
+
 
             }
             if (isDownAttack && !isKnockBack)
@@ -455,7 +463,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isKnockBack = false;
         anim.SetBool("isHurt", false);
-        if(enemy != null)
+        yield return new WaitForSeconds(.3f);
+
+        if (enemy != null)
         {
             Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
         }
@@ -478,6 +488,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isHurt", false);
         canvasManager.SpikeHurtInactive();
         transform.position = exitGroundPos;
+        yield return new WaitForSeconds(.1f);
         if (enemy != null)
         {
             Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);

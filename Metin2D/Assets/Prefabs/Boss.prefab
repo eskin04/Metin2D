@@ -386,9 +386,11 @@ MonoBehaviour:
   health: 28
   arrowCount: 40
   arrowSpawnTime: 0.15
+  swordJump: 0
   bullet: {fileID: 8317598087991722629, guid: 0195086ca31a85943a23906aa37e7d3e, type: 3}
   arrow: {fileID: 6346432297376390347, guid: 80add9c87f63e214ca7f8a4d96e96118, type: 3}
   healthBar: {fileID: 0}
+  introMusic: {fileID: 0}
 --- !u!60 &1486251276
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -958,54 +960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d279317a823f06a45ad66fd625d7b4bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &3153790787664408281 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1033196446740940, guid: 6877fb649746c674d8fbbcf60d41892b, type: 3}
-  m_PrefabInstance: {fileID: 3154542483024781077}
-  m_PrefabAsset: {fileID: 0}
---- !u!60 &1224941483
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3153790787664408281}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5064954, y: 0.11925681}
-    oldSize: {x: 0.31, y: 1.1}
-    newSize: {x: 0.31, y: 1.1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.091510534, y: 0.42500147}
-      - {x: 0.107094534, y: 0.53545123}
-      - {x: 0.108443454, y: 0.7386986}
-      - {x: 0.039422873, y: 0.8521381}
-      - {x: -0.014393223, y: 0.91361415}
-      - {x: -0.13126248, y: 0.704302}
-      - {x: -0.1267727, y: 0.622641}
-      - {x: -0.10599032, y: 0.55202353}
-      - {x: -0.09622605, y: 0.4418876}
-      - {x: -0.07986146, y: 0.20571189}
-      - {x: -0.15701358, y: 0.17881751}
-      - {x: -0.15701358, y: 0.07881752}
-      - {x: -0.09701358, y: -0.08118248}
-      - {x: -0.05701358, y: -0.13118248}
-      - {x: 0.07298642, y: -0.13118248}
-      - {x: 0.15298642, y: 0.02881752}
-      - {x: 0.15298642, y: 0.18881752}
-      - {x: 0.07038051, y: 0.24495155}
 --- !u!4 &3155293469142763937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4210157123753652, guid: 6877fb649746c674d8fbbcf60d41892b, type: 3}
