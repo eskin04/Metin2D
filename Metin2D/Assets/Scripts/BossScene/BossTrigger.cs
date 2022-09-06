@@ -6,21 +6,13 @@ public class BossTrigger : MonoBehaviour
 {
     [SerializeField] GameObject bossScene;
     [SerializeField] CamerController camContrl;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
-    }
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.tag=="CameraObj")
+        if (other.gameObject.tag == "CameraObj")
         {
-            camContrl.enabled=false;
+            camContrl.enabled = false;
+            Camera.main.transform.position = new Vector3(-1.9f, 7.18f, -10);
             bossScene.SetActive(true);
             Destroy(gameObject);
         }

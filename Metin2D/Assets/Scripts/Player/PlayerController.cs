@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float upSpeed;
     [SerializeField] float slowMotion;
     [SerializeField] float downAttackForce;
-    [SerializeField] int fireBallCount;
+    [SerializeField] float fireBallCount;
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
 
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
         firstGravityScale = rb.gravityScale;
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         fixedTime = Time.fixedDeltaTime;
+        fireBallCount = playerDataSc.maxFireBall;
         if (canvasManager)
         {
             CoinUpdate(0);
@@ -75,6 +77,22 @@ public class PlayerController : MonoBehaviour
         }
         canvasManager.CoinText(playerDataSc.totalCoin);
     }
+    public void SaveDashUpgrade()
+    {
+        playerSound.ShopSound();
+        CoinUpdate(-playerDataSc.updateCoinDash);
+        playerDataSc.updateCoinDash += 5;
+        playerDataSc.dashCoolDown -= 0.2f;
+        playerDataSc.Save();
+    }
+    public void SaveFireUpgrade()
+    {
+        playerSound.ShopSound();
+        CoinUpdate(-playerDataSc.updateCoinFire);
+        playerDataSc.updateCoinFire += 5;
+        playerDataSc.maxFireBall += 2;
+        playerDataSc.Save();
+    }
     void IgnoreLayerFalse()
     {
         Physics2D.IgnoreLayerCollision(7, 9, false);
@@ -86,7 +104,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isGameOver && !isBossIntro)
+        if (!isGameOver && !isBossIntro && !canvasManager.isNextLevelPanel)
         {
             anim.SetFloat("AirSpeed", rb.velocity.y);
             float horizontalInput = Input.GetAxis("Horizontal");
@@ -101,7 +119,7 @@ public class PlayerController : MonoBehaviour
                     waitLayerTime = Time.time;
                     isIgnoreLayer = true;
                 }
-                if (Time.time >= waitLayerTime + .82f && isIgnoreLayer)
+                if (Time.time >= waitLayerTime + 1.12f && isIgnoreLayer)
                 {
                     IgnoreLayerFalse();
                     isIgnoreLayer = false;
@@ -219,7 +237,7 @@ public class PlayerController : MonoBehaviour
         isDash = false;
         anim.SetBool("isDash", false);
         dashWind.SetActive(false);
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(playerDataSc.dashCoolDown);
         dashCoolDown = false;
     }
     void GameOver()
@@ -303,14 +321,14 @@ public class PlayerController : MonoBehaviour
             {
                 boss.GetComponent<BossController>().TakeBossDamage(1);
                 playerSound.AttackEnemySound();
+                if (isDownAttack && !isKnockBack)
+                {
+                    rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
 
+                }
 
             }
-            if (isDownAttack && !isKnockBack)
-            {
-                rb.AddForce(Vector2.up * downAttackForce, ForceMode2D.Impulse);
 
-            }
         }
 
         // find chests in range
@@ -463,7 +481,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         isKnockBack = false;
         anim.SetBool("isHurt", false);
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.8f);
 
         if (enemy != null)
         {
@@ -488,7 +506,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isHurt", false);
         canvasManager.SpikeHurtInactive();
         transform.position = exitGroundPos;
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.6f);
         if (enemy != null)
         {
             Physics2D.IgnoreLayerCollision(gameObject.layer, enemy.layer, false);
@@ -590,7 +608,12 @@ public class PlayerController : MonoBehaviour
         {
             playerDataSc.currentScene += 1;
             playerDataSc.Save();
-            SceneManager.LoadScene(playerDataSc.currentScene);
+            if (playerDataSc.currentScene > 1)
+            {
+                canvasManager.isNextLevelPanel = true;
+                Time.timeScale = 0;
+            }
+
         }
         if (other.gameObject.tag == "Ladder")
         {

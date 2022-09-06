@@ -13,8 +13,10 @@ public class PlayerSound : MonoBehaviour
     [SerializeField] AudioClip coinSound;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip fireBall;
+    [SerializeField] AudioClip shopSound;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioSource audioSourceWalk;
+    
 
 
     public void AttackSound()
@@ -72,5 +74,10 @@ public class PlayerSound : MonoBehaviour
     {
         audioSource.pitch = .9f;
         audioSource.PlayOneShot(fireBall, .5f);
+    }
+    public void ShopSound()
+    {
+        audioSource.pitch = 1.2f;
+        audioSource.PlayOneShot(shopSound, .5f);
     }
 }

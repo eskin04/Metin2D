@@ -3222,6 +3222,7 @@ GameObject:
   - component: {fileID: 1628293853585625854}
   - component: {fileID: 1860970676}
   - component: {fileID: -1664808968287199500}
+  - component: {fileID: 3521007558330655248}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -3383,6 +3384,7 @@ MonoBehaviour:
   canvasManager: {fileID: 0}
   isKnockBack: 0
   isBossDie: 0
+  isBossIntro: 0
   isInLadder: 0
 --- !u!95 &457880898811061355
 Animator:
@@ -3418,6 +3420,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalCoin: 0
   currentScene: 0
+  maxFireBall: 10
+  dashCoolDown: 1
+  updateCoinDash: 10
+  updateCoinFire: 10
 --- !u!114 &4230625308586744110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3453,6 +3459,7 @@ MonoBehaviour:
   coinSound: {fileID: 8300000, guid: 9e06fdd7b7456584baaacc7ee911271d, type: 3}
   deathSound: {fileID: 8300000, guid: 4e09d525611c29b4ebc6736a8bbb7768, type: 3}
   fireBall: {fileID: 8300000, guid: c30dd8e284be24e4b91287d7f6dd1447, type: 3}
+  shopSound: {fileID: 8300000, guid: 4c786fca493e6624384e714b2c50cb89, type: 3}
   audioSource: {fileID: 1628293853585625854}
   audioSourceWalk: {fileID: 1860970676}
 --- !u!82 &1628293853585625854
@@ -3655,3 +3662,16 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 457880898811061346}
   m_Enabled: 1
+--- !u!114 &3521007558330655248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457880898811061346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2e3df0d2c47b349897a99df9807934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pausePanel: {fileID: 0}

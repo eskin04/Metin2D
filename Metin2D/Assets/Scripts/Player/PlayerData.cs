@@ -7,6 +7,10 @@ public class PlayerData : MonoBehaviour
 {
     public float totalCoin;
     public int currentScene;
+    public float maxFireBall;
+    public float dashCoolDown;
+    public float updateCoinDash;
+    public float updateCoinFire;
     PlayerController playerSc;
 
 
@@ -16,7 +20,9 @@ public class PlayerData : MonoBehaviour
         currentScene = SceneManager.GetActiveScene().buildIndex;
         playerSc = GetComponent<PlayerController>();
         if (currentScene != 0)
-            Load();
+            LoadWithOutScene();
+        else
+            Save();
 
     }
 
@@ -26,13 +32,23 @@ public class PlayerData : MonoBehaviour
     }
     public void Load()
     {
+            LoadWithOutScene();
+
+            if (currentScene != SceneManager.GetActiveScene().buildIndex)
+                SceneManager.LoadScene(currentScene);
+
+    }
+    public void LoadWithOutScene()
+    {
         Data data = SystemSave.LoadPlayer();
         if (data != null)
         {
             currentScene = data.sceneBuild;
             totalCoin = data.coin;
-            if (currentScene != SceneManager.GetActiveScene().buildIndex)
-                SceneManager.LoadScene(currentScene);
+            maxFireBall = data.maxFireBall;
+            dashCoolDown = data.dashCoolDown;
+            updateCoinDash = data.updateCoinDash;
+            updateCoinFire = data.updateCoinFire;
         }
 
     }

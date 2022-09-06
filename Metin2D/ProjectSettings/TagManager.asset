@@ -25,6 +25,7 @@ TagManager:
   - HealthImg
   - SafetyArea
   - SpikeHurtPanel
+  - LevelButton
   layers:
   - Default
   - TransparentFX
