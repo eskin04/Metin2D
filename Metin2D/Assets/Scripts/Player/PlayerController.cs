@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject dashWind;
     [SerializeField] GameObject fireBallPref;
     [SerializeField] GameObject protection;
-    [SerializeField] CanvasManager canvasManager;
+    [SerializeField] public CanvasManager canvasManager;
     PlayerSound playerSound;
     PlayerData playerDataSc;
     PlayerHealth playerHealthSc;
@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     bool isIgnoreLayer;
     float waitLayerTime;
     bool isDownAttack;
+    bool isParshment;
 
 
 
@@ -257,7 +258,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         Time.timeScale = 1;
         Time.fixedDeltaTime = fixedTime;
-        SceneManager.LoadScene(playerDataSc.currentScene);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     }
 
@@ -354,6 +355,7 @@ public class PlayerController : MonoBehaviour
             if (place != null)
             {
                 place.GetComponent<SecretPlace>().DestroyPlace(-1);
+                playerSound.WallHitSound();
                 isNull = false;
 
             }
@@ -427,6 +429,7 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateHealth(int add)
     {
+
         playerHealthSc.health += add;
         playerHealthSc.SetHealthImg();
     }
@@ -537,6 +540,27 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Grounded", true);
 
         }
+        if (collision.gameObject.tag == "NextLevel")
+        {
+            if (isParshment)
+            {
+                Destroy(collision.gameObject);
+                GameObject.FindGameObjectWithTag("BackSound").GetComponent<AudioSource>().Stop();
+                playerSound.NextLevelSound();
+                playerDataSc.currentScene += 1;
+                playerDataSc.Save();
+                if (playerDataSc.currentScene > 1)
+                {
+                    canvasManager.isNextLevelPanel = true;
+                    Time.timeScale = 0;
+                }
+
+            }
+            else
+            {
+                canvasManager.NextLevelText();
+            }
+        }
         if (collision.gameObject.tag == "Platform")
         {
             isOnPlatform = true;
@@ -593,6 +617,7 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.tag == "Heal")
         {
+            playerSound.HealthSound();
             if (playerHealthSc.health <= playerHealthSc.maxHealth - 1)
             {
                 UpdateHealth(1);
@@ -604,14 +629,14 @@ public class PlayerController : MonoBehaviour
                 Protection();
             }
         }
-        if (other.gameObject.tag == "NextLevel")
+        if (other.gameObject.tag == "parshment")
         {
-            playerDataSc.currentScene += 1;
-            playerDataSc.Save();
-            if (playerDataSc.currentScene > 1)
+            isParshment = true;
+            Destroy(other.gameObject);
+            canvasManager.SetParshmentImage();
+            if (canvasManager.isNextLevelText)
             {
-                canvasManager.isNextLevelPanel = true;
-                Time.timeScale = 0;
+                canvasManager.NextLevelTextInactive();
             }
 
         }

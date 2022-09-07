@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] GameObject newGameButton;
     [SerializeField] GameObject gamePanel;
-
+    [SerializeField] GameObject spikeHurt;
     [SerializeField] GameObject optionsPanel;
     [SerializeField] TMP_Dropdown resolutionDropdown;
     [SerializeField] Slider volumeSlider;
@@ -38,10 +38,10 @@ public class GameManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         Time.timeScale = 0;
         Data data = SystemSave.LoadPlayer();
-        if (data != null)
+        if (data.sceneBuild != 0)
         {
             newGameButton.SetActive(true);
-            startText.text = "Load Game";
+            startText.text = "New Game";
             currentScene = data.sceneBuild;
         }
     }
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         background.Play();
         mainPanel.SetActive(false);
         gamePanel.SetActive(true);
-        player.SetActive(true);
+        player.GetComponent<SpriteRenderer>().enabled = true;
         anim.SetTrigger("isStart");
         StartCoroutine(StartGameAfterDelay());
 
@@ -62,6 +62,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         anim.enabled = false;
+        player.GetComponent<PlayerController>().enabled = true;
+        player.GetComponent<PlayerHealth>().enabled = true;
+
     }
     void SetLevelButtonDisabled()
     {
@@ -79,7 +82,18 @@ public class GameManager : MonoBehaviour
     public void LoadLevelButton(int level)
     {
         Time.timeScale = 1;
+        spikeHurt.SetActive(true);
+        StartCoroutine(LoadLevelAfterDelay(level));
+
+    }
+    IEnumerator LoadLevelAfterDelay(int level)
+    {
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(level);
+    }
+    public void SpikeSetActive()
+    {
+        spikeHurt.SetActive(true);
     }
     public void OptionsMenu()
     {

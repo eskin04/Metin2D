@@ -11,6 +11,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI coinText;
     [SerializeField] GameObject spikeHurt;
     [SerializeField] GameObject nextLevelPanel;
+    [SerializeField] GameObject parshmentImage;
     [SerializeField] Button dashButton;
     [SerializeField] Button fireButton;
     [SerializeField] TextMeshProUGUI oldDashText;
@@ -19,10 +20,12 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI newFireText;
     [SerializeField] TextMeshProUGUI dashUpgradeText;
     [SerializeField] TextMeshProUGUI fireUpgradeText;
+    [SerializeField] GameObject nextLevelText;
     [SerializeField] AudioClip clickSound;
     [SerializeField] AudioClip buttonSound;
     AudioSource audioSource;
     public bool isNextLevelPanel;
+    public bool isNextLevelText;
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -79,17 +82,49 @@ public class CanvasManager : MonoBehaviour
     public void NextLevel()
     {
         Time.timeScale = 1;
+        SpikeHurtActive();
+        StartCoroutine(NextLevelAfterDelay());
+    }
+    IEnumerator NextLevelAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void Restart()
     {
         Time.timeScale = 1;
+        SpikeHurtActive();
+        StartCoroutine(RestartAfterDelay());
+    }
+    IEnumerator RestartAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void MainMenu()
     {
         Time.timeScale = 1;
+        SpikeHurtActive();
+        StartCoroutine(MainMenuAfterDelay());
+    }
+    IEnumerator MainMenuAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(0);
+    }
+    public void NextLevelText()
+    {
+        nextLevelText.SetActive(true);
+        isNextLevelText = true;
+    }
+    public void NextLevelTextInactive()
+    {
+        nextLevelText.SetActive(false);
+        isNextLevelText = false;
+    }
+    public void SetParshmentImage()
+    {
+        parshmentImage.GetComponent<Image>().color = Color.white;
     }
 
 }

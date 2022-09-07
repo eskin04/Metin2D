@@ -21,9 +21,6 @@ public class PlayerData : MonoBehaviour
         playerSc = GetComponent<PlayerController>();
         if (currentScene != 0)
             LoadWithOutScene();
-        else
-            Save();
-
     }
 
     public void Save()
@@ -32,11 +29,16 @@ public class PlayerData : MonoBehaviour
     }
     public void Load()
     {
-            LoadWithOutScene();
+        LoadWithOutScene();
+        Time.timeScale = 1;
+        StartCoroutine(LoadAfterDelay());
 
-            if (currentScene != SceneManager.GetActiveScene().buildIndex)
-                SceneManager.LoadScene(currentScene);
 
+    }
+    IEnumerator LoadAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+        SceneManager.LoadScene(currentScene);
     }
     public void LoadWithOutScene()
     {

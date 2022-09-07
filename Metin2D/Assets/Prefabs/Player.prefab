@@ -3453,6 +3453,7 @@ MonoBehaviour:
   attackSound: {fileID: 8300000, guid: cba4c5a1b096b924abbc5378c74e6b4f, type: 3}
   attackEnemySound: {fileID: 8300000, guid: eae69cd61515be740931f37505b9cebc, type: 3}
   attackSpearSound: {fileID: 8300000, guid: 0d69012e72cc9904abe8bef26bc9fc22, type: 3}
+  wallHitSound: {fileID: 8300000, guid: 9838dbe9de701d5478e2c7f66d02ad40, type: 3}
   dashSound: {fileID: 8300000, guid: c453061f795c0634b96e835de765f32c, type: 3}
   jumpSound: {fileID: 8300000, guid: 41809bede96ab614c8e56ab048614ed2, type: 3}
   hurtSound: {fileID: 8300000, guid: 09fd7e0656bfe7c4b9905f8a9a786e0e, type: 3}
@@ -3460,6 +3461,8 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 4e09d525611c29b4ebc6736a8bbb7768, type: 3}
   fireBall: {fileID: 8300000, guid: c30dd8e284be24e4b91287d7f6dd1447, type: 3}
   shopSound: {fileID: 8300000, guid: 4c786fca493e6624384e714b2c50cb89, type: 3}
+  healthSound: {fileID: 8300000, guid: 6f7f835a9323f354e9cd80f38c5b2b24, type: 3}
+  nextLevelSound: {fileID: 8300000, guid: de7327709f720724fb3ed6bccd5929a6, type: 3}
   audioSource: {fileID: 1628293853585625854}
   audioSourceWalk: {fileID: 1860970676}
 --- !u!82 &1628293853585625854

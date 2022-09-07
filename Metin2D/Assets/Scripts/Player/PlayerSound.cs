@@ -7,6 +7,7 @@ public class PlayerSound : MonoBehaviour
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip attackEnemySound;
     [SerializeField] AudioClip attackSpearSound;
+    [SerializeField] AudioClip wallHitSound;
     [SerializeField] AudioClip dashSound;
     [SerializeField] AudioClip jumpSound;
     [SerializeField] AudioClip hurtSound;
@@ -14,9 +15,11 @@ public class PlayerSound : MonoBehaviour
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip fireBall;
     [SerializeField] AudioClip shopSound;
+    [SerializeField] AudioClip healthSound;
+    [SerializeField] AudioClip nextLevelSound;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioSource audioSourceWalk;
-    
+
 
 
     public void AttackSound()
@@ -52,6 +55,11 @@ public class PlayerSound : MonoBehaviour
         audioSource.pitch = .5f;
         audioSource.PlayOneShot(attackSpearSound, .3f);
     }
+    public void WallHitSound()
+    {
+        audioSource.pitch = 1f;
+        audioSource.PlayOneShot(wallHitSound);
+    }
     public void DashSound()
     {
         audioSource.pitch = .5f;
@@ -80,4 +88,15 @@ public class PlayerSound : MonoBehaviour
         audioSource.pitch = 1.2f;
         audioSource.PlayOneShot(shopSound, .5f);
     }
+    public void HealthSound()
+    {
+        audioSource.pitch = 1f;
+        audioSource.PlayOneShot(healthSound, .5f);
+    }
+    public void NextLevelSound()
+    {
+        audioSource.pitch = 1f;
+        audioSource.PlayOneShot(nextLevelSound, .8f);
+    }
+
 }

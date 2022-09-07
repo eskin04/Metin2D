@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pausePanel;
     PlayerController playerSc;
+
     bool isPause;
     void Start()
     {
@@ -45,11 +46,25 @@ public class PauseMenu : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1;
+        playerSc.canvasManager.SpikeHurtActive();
+        StartCoroutine(RestartAfterDelay());
+
+    }
+    IEnumerator RestartAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     public void MainMenu()
     {
         Time.timeScale = 1;
+        playerSc.canvasManager.SpikeHurtActive();
+        StartCoroutine(MainMenuAfterDelay());
+
+    }
+    IEnumerator MainMenuAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(0);
     }
 }
