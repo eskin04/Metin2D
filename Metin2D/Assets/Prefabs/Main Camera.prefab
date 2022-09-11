@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  smoothing: 3.5
+  smoothing: 2
   offset: {x: 3, y: 2, z: 0}
   playerSc: {fileID: 0}
 --- !u!114 &1655874306

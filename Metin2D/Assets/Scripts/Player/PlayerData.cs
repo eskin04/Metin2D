@@ -19,8 +19,8 @@ public class PlayerData : MonoBehaviour
     {
         currentScene = SceneManager.GetActiveScene().buildIndex;
         playerSc = GetComponent<PlayerController>();
-        if (currentScene != 0)
-            LoadWithOutScene();
+
+        LoadWithOutScene();
     }
 
     public void Save()

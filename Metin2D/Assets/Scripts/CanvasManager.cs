@@ -20,20 +20,30 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI newFireText;
     [SerializeField] TextMeshProUGUI dashUpgradeText;
     [SerializeField] TextMeshProUGUI fireUpgradeText;
+    [SerializeField] TextMeshProUGUI levelBannerText;
     [SerializeField] GameObject nextLevelText;
     [SerializeField] AudioClip clickSound;
     [SerializeField] AudioClip buttonSound;
     AudioSource audioSource;
     public bool isNextLevelPanel;
+    bool isVictory;
     public bool isNextLevelText;
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        if (SceneManager.GetActiveScene().name == "BossScene")
+        {
+            levelBannerText.text = "Boss Stage";
+        }
+        else if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            levelBannerText.text = "Stage " + SceneManager.GetActiveScene().buildIndex.ToString();
+        }
     }
     private void Update()
     {
 
-        if (isNextLevelPanel)
+        if (isNextLevelPanel && !isVictory)
         {
             Data data = SystemSave.LoadPlayer();
             nextLevelPanel.SetActive(true);
@@ -54,6 +64,10 @@ public class CanvasManager : MonoBehaviour
         }
 
     }
+    public void MenuSceneBanner()
+    {
+        levelBannerText.text = "Tutorial";
+    }
 
     public void FireBallText(float fireBallCount)
     {
@@ -61,7 +75,10 @@ public class CanvasManager : MonoBehaviour
     }
     public void CoinText(float totalCoin)
     {
-        coinText.text = totalCoin.ToString();
+        if (coinText != null)
+        {
+            coinText.text = totalCoin.ToString();
+        }
     }
     public void SpikeHurtActive()
     {
@@ -125,6 +142,15 @@ public class CanvasManager : MonoBehaviour
     public void SetParshmentImage()
     {
         parshmentImage.GetComponent<Image>().color = Color.white;
+    }
+    public void Victory()
+    {
+        Time.timeScale = 0;
+        isVictory = true;
+        isNextLevelPanel = true;
+        levelBannerText.text = "Okan Eskin";
+        nextLevelText.SetActive(true);
+        nextLevelPanel.SetActive(true);
     }
 
 }

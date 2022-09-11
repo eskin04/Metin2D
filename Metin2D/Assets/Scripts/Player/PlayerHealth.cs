@@ -7,12 +7,11 @@ public class PlayerHealth : MonoBehaviour
 {
     public int health;
     public int maxHealth;
-    GameObject[] healthImgs;
+    [SerializeField] GameObject[] healthImgs;
     // Start is called before the first frame update
     void Start()
     {
         health = maxHealth;
-        healthImgs ??= GameObject.FindGameObjectsWithTag("HealthImg");
         SetMaxHealthImg();
     }
 

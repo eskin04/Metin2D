@@ -143,12 +143,11 @@ public class BossController : MonoBehaviour
     IEnumerator KillBossWait()
     {
         yield return new WaitForSeconds(3.2f);
-        Destroy(gameObject);
-
+        this.enabled = false;
     }
     public void TakeBossDamage(int damage)
     {
-        bossSound.HurtSound();
+        swordManScript.BossHurt();
         health -= damage;
         healthBar.SetHealth(health);
         lightBoss.intensity = 5;
@@ -158,6 +157,8 @@ public class BossController : MonoBehaviour
     {
         yield return new WaitForSeconds(.1f);
         lightBoss.intensity = firstLight;
+        yield return new WaitForSeconds(.1f);
+        swordManScript.BossHurtEnd();
     }
     IEnumerator WaitSword()
     {

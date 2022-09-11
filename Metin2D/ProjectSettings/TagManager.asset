@@ -25,8 +25,8 @@ TagManager:
   - HealthImg
   - SafetyArea
   - SpikeHurtPanel
-  - LevelButton
   - BackSound
+  - parshment
   layers:
   - Default
   - TransparentFX
@@ -45,7 +45,7 @@ TagManager:
   - BossWall
   - FireBall
   - Bomb
-  - 
+  - Statue
   - 
   - 
   - 

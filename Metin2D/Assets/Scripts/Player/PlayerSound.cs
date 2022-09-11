@@ -17,6 +17,7 @@ public class PlayerSound : MonoBehaviour
     [SerializeField] AudioClip shopSound;
     [SerializeField] AudioClip healthSound;
     [SerializeField] AudioClip nextLevelSound;
+    [SerializeField] AudioClip parshmentSound;
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioSource audioSourceWalk;
 
@@ -97,6 +98,11 @@ public class PlayerSound : MonoBehaviour
     {
         audioSource.pitch = 1f;
         audioSource.PlayOneShot(nextLevelSound, .8f);
+    }
+    public void ParshmentSound()
+    {
+        audioSource.pitch = 1f;
+        audioSource.PlayOneShot(parshmentSound, .5f);
     }
 
 }

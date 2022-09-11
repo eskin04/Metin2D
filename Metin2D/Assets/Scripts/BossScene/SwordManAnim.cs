@@ -14,7 +14,7 @@ public class SwordManAnim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void JumpForce()
@@ -61,5 +61,13 @@ public class SwordManAnim : MonoBehaviour
     public void BossDie()
     {
         anim.SetTrigger("die");
+    }
+    public void BossHurt()
+    {
+        anim.SetBool("isHurt", true);
+    }
+    public void BossHurtEnd()
+    {
+        anim.SetBool("isHurt", false);
     }
 }

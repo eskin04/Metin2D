@@ -3463,6 +3463,7 @@ MonoBehaviour:
   shopSound: {fileID: 8300000, guid: 4c786fca493e6624384e714b2c50cb89, type: 3}
   healthSound: {fileID: 8300000, guid: 6f7f835a9323f354e9cd80f38c5b2b24, type: 3}
   nextLevelSound: {fileID: 8300000, guid: de7327709f720724fb3ed6bccd5929a6, type: 3}
+  parshmentSound: {fileID: 8300000, guid: d871e31e0950aca4f9f4b225a9849504, type: 3}
   audioSource: {fileID: 1628293853585625854}
   audioSourceWalk: {fileID: 1860970676}
 --- !u!82 &1628293853585625854

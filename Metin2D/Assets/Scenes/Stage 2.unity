@@ -1545,6 +1545,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0708810f5ae28ca428cfd825b54a3471, type: 3}
+--- !u!1 &230874971 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5848983163090191837, guid: 0708810f5ae28ca428cfd825b54a3471, type: 3}
+  m_PrefabInstance: {fileID: 230874970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &230874972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6086756550652959782, guid: 0708810f5ae28ca428cfd825b54a3471, type: 3}
+  m_PrefabInstance: {fileID: 230874970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &230874973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4963223154179745089, guid: 0708810f5ae28ca428cfd825b54a3471, type: 3}
+  m_PrefabInstance: {fileID: 230874970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &230874974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8896065016174558125, guid: 0708810f5ae28ca428cfd825b54a3471, type: 3}
+  m_PrefabInstance: {fileID: 230874970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &230874975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5358315867693005365, guid: 0708810f5ae28ca428cfd825b54a3471, type: 3}
+  m_PrefabInstance: {fileID: 230874970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &259880829
 GameObject:
   m_ObjectHideFlags: 0
@@ -85640,6 +85665,30 @@ PrefabInstance:
       propertyPath: pausePanel
       value: 
       objectReference: {fileID: 274327697}
+    - target: {fileID: 4230625308586744110, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
+      propertyPath: healthImgs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230625308586744110, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
+      propertyPath: healthImgs.Array.data[0]
+      value: 
+      objectReference: {fileID: 230874975}
+    - target: {fileID: 4230625308586744110, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
+      propertyPath: healthImgs.Array.data[1]
+      value: 
+      objectReference: {fileID: 230874974}
+    - target: {fileID: 4230625308586744110, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
+      propertyPath: healthImgs.Array.data[2]
+      value: 
+      objectReference: {fileID: 230874973}
+    - target: {fileID: 4230625308586744110, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
+      propertyPath: healthImgs.Array.data[3]
+      value: 
+      objectReference: {fileID: 230874972}
+    - target: {fileID: 4230625308586744110, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
+      propertyPath: healthImgs.Array.data[4]
+      value: 
+      objectReference: {fileID: 230874971}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a534e7b177875409307ef0394ebf4d, type: 3}
 --- !u!114 &1860970666 stripped

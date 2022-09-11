@@ -10,6 +10,8 @@ public class BossSound : MonoBehaviour
     [SerializeField] AudioClip powerSound2;
     [SerializeField] AudioClip hurtSound;
     [SerializeField] AudioClip backForce;
+    [SerializeField] AudioClip victorySound;
+    [SerializeField] CanvasManager canvasManager;
     [SerializeField] AudioClip[] attackSound;
 
     AudioSource source;
@@ -34,6 +36,10 @@ public class BossSound : MonoBehaviour
     public void BossDieSound()
     {
         source.PlayOneShot(dieSound, .5f);
+        foreach (GameObject sound in GameObject.FindGameObjectsWithTag("BackSound"))
+        {
+            sound.GetComponent<AudioSource>().Stop();
+        }
     }
     public void AttackSound1()
     {
@@ -62,5 +68,11 @@ public class BossSound : MonoBehaviour
     public void BackForceSound()
     {
         source.PlayOneShot(backForce, .5f);
+    }
+    public void VictorySound()
+    {
+        source.PlayOneShot(victorySound);
+        canvasManager.Victory();
+
     }
 }

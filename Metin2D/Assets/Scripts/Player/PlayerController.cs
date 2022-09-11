@@ -632,6 +632,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "parshment")
         {
             isParshment = true;
+            playerSound.ParshmentSound();
             Destroy(other.gameObject);
             canvasManager.SetParshmentImage();
             if (canvasManager.isNextLevelText)

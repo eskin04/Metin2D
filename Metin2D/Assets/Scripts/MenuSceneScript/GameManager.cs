@@ -18,16 +18,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Dropdown resolutionDropdown;
     [SerializeField] Slider volumeSlider;
     [SerializeField] GameObject levelsPanel;
+
+    [SerializeField] GameObject tutorialPanel;
+    [SerializeField] Transform tutorialTrigger;
+
     [SerializeField] TextMeshProUGUI startText;
     [SerializeField] AudioSource background;
     [SerializeField] AudioSource menuMusic;
     [SerializeField] AudioClip buttonSound;
     [SerializeField] AudioClip clickSound;
+    [SerializeField] CanvasManager canvasManager;
 
-    GameObject[] levelButtons;
+
+    [SerializeField] GameObject[] levelButtons;
     AudioSource audioSource;
     int currentScene;
-
     Animator anim;
     // Start is called before the first frame update
     void Start()
@@ -38,11 +43,26 @@ public class GameManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         Time.timeScale = 0;
         Data data = SystemSave.LoadPlayer();
-        if (data.sceneBuild != 0)
+        if (data != null)
         {
-            newGameButton.SetActive(true);
-            startText.text = "New Game";
-            currentScene = data.sceneBuild;
+            if (data.sceneBuild != 0)
+            {
+                newGameButton.SetActive(true);
+                startText.text = "New Game";
+                currentScene = data.sceneBuild;
+            }
+
+        }
+    }
+    private void Update()
+    {
+        if (player.transform.position.x < tutorialTrigger.position.x)
+        {
+            tutorialPanel.SetActive(true);
+        }
+        else
+        {
+            tutorialPanel.SetActive(false);
         }
     }
 
@@ -53,6 +73,8 @@ public class GameManager : MonoBehaviour
         background.Play();
         mainPanel.SetActive(false);
         gamePanel.SetActive(true);
+        canvasManager.MenuSceneBanner();
+
         player.GetComponent<SpriteRenderer>().enabled = true;
         anim.SetTrigger("isStart");
         StartCoroutine(StartGameAfterDelay());
@@ -68,8 +90,6 @@ public class GameManager : MonoBehaviour
     }
     void SetLevelButtonDisabled()
     {
-        levelButtons = GameObject.FindGameObjectsWithTag("LevelButton");
-
         for (int i = 0; i < levelButtons.Length; i++)
         {
             if (i + 1 > currentScene)
