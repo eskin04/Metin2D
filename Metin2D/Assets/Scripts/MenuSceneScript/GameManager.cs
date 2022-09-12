@@ -34,9 +34,11 @@ public class GameManager : MonoBehaviour
     AudioSource audioSource;
     int currentScene;
     Animator anim;
+    PlayerController playerController;
     // Start is called before the first frame update
     void Start()
     {
+        playerController = player.GetComponent<PlayerController>();
         resolutionDropdown.value = QualitySettings.GetQualityLevel();
         volumeSlider.value = AudioListener.volume;
         anim = GetComponent<Animator>();
@@ -53,6 +55,7 @@ public class GameManager : MonoBehaviour
             }
 
         }
+
     }
     private void Update()
     {
@@ -69,12 +72,12 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1;
+        player.GetComponent<PlayerData>().LoadWithOutScene();
         menuMusic.Pause();
         background.Play();
         mainPanel.SetActive(false);
         gamePanel.SetActive(true);
         canvasManager.MenuSceneBanner();
-
         player.GetComponent<SpriteRenderer>().enabled = true;
         anim.SetTrigger("isStart");
         StartCoroutine(StartGameAfterDelay());
@@ -84,9 +87,20 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         anim.enabled = false;
-        player.GetComponent<PlayerController>().enabled = true;
+        playerController.enabled = true;
         player.GetComponent<PlayerHealth>().enabled = true;
 
+    }
+    public void LoadScene()
+    {
+        Time.timeScale = 1;
+        menuMusic.Pause();
+        StartCoroutine(LoadSceneAfterDelay());
+    }
+    IEnumerator LoadSceneAfterDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+        player.GetComponent<PlayerData>().Load();
     }
     void SetLevelButtonDisabled()
     {
@@ -103,6 +117,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         spikeHurt.SetActive(true);
+        menuMusic.Stop();
         StartCoroutine(LoadLevelAfterDelay(level));
 
     }

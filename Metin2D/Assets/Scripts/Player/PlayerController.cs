@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float upSpeed;
     [SerializeField] float slowMotion;
     [SerializeField] float downAttackForce;
-    [SerializeField] float fireBallCount;
+    [SerializeField] public float fireBallCount;
     [SerializeField] Animator anim;
     [SerializeField] Vector3 localScale;
     [SerializeField] Vector3 reverseScale;
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public bool isBossDie;
     public bool isBossIntro;
     public bool isInLadder;
+
     bool isDash;
     bool dashCoolDown;
     int isLookRight;
@@ -62,12 +63,6 @@ public class PlayerController : MonoBehaviour
         firstGravityScale = rb.gravityScale;
         boxCollider = gameObject.GetComponent<BoxCollider2D>();
         fixedTime = Time.fixedDeltaTime;
-        fireBallCount = playerDataSc.maxFireBall;
-        if (canvasManager)
-        {
-            CoinUpdate(0);
-            canvasManager.FireBallText(fireBallCount);
-        }
     }
     public void CoinUpdate(float coin)
     {
@@ -547,13 +542,13 @@ public class PlayerController : MonoBehaviour
                 Destroy(collision.gameObject);
                 GameObject.FindGameObjectWithTag("BackSound").GetComponent<AudioSource>().Stop();
                 playerSound.NextLevelSound();
-                playerDataSc.currentScene += 1;
+                if (playerDataSc.currentScene <= SceneManager.GetActiveScene().buildIndex)
+                    playerDataSc.currentScene += 1;
+                Debug.Log(playerDataSc.currentScene);
                 playerDataSc.Save();
-                if (playerDataSc.currentScene > 1)
-                {
-                    canvasManager.isNextLevelPanel = true;
-                    Time.timeScale = 0;
-                }
+                canvasManager.isNextLevelPanel = true;
+                Time.timeScale = 0;
+
 
             }
             else

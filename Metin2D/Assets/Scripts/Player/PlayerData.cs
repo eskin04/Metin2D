@@ -12,15 +12,14 @@ public class PlayerData : MonoBehaviour
     public float updateCoinDash;
     public float updateCoinFire;
     PlayerController playerSc;
-
+    [SerializeField] CanvasManager canvasManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentScene = SceneManager.GetActiveScene().buildIndex;
         playerSc = GetComponent<PlayerController>();
-
-        LoadWithOutScene();
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+            LoadWithOutScene();
     }
 
     public void Save()
@@ -53,10 +52,18 @@ public class PlayerData : MonoBehaviour
             updateCoinFire = data.updateCoinFire;
         }
 
+
+        playerSc.fireBallCount = maxFireBall;
+        if (canvasManager)
+        {
+            canvasManager.FireBallText(maxFireBall);
+            canvasManager.CoinText(totalCoin);
+        }
+
     }
     public void Remove()
     {
         SystemSave.RemovePlayer(this);
-
+        Save();
     }
 }

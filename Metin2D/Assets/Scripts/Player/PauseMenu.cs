@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pausePanel;
+    [SerializeField] Sprite soundOn, soundOff;
+    [SerializeField] Image soundButtonImg;
     PlayerController playerSc;
 
     bool isPause;
@@ -47,6 +50,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1;
         playerSc.canvasManager.SpikeHurtActive();
+        GameObject.FindGameObjectWithTag("BackSound").GetComponent<AudioSource>().Stop();
         StartCoroutine(RestartAfterDelay());
 
     }
@@ -59,6 +63,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1;
         playerSc.canvasManager.SpikeHurtActive();
+        GameObject.FindGameObjectWithTag("BackSound").GetComponent<AudioSource>().Stop();
         StartCoroutine(MainMenuAfterDelay());
 
     }
@@ -66,5 +71,18 @@ public class PauseMenu : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         SceneManager.LoadScene(0);
+    }
+    public void ChangeSound()
+    {
+        if (AudioListener.volume != 0)
+        {
+            AudioListener.volume = 0;
+            soundButtonImg.sprite = soundOff;
+        }
+        else
+        {
+            AudioListener.volume = 1;
+            soundButtonImg.sprite = soundOn;
+        }
     }
 }

@@ -10,6 +10,8 @@ public class SceneTrigger : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            other.gameObject.GetComponent<PlayerData>().currentScene += 1;
+            other.gameObject.GetComponent<PlayerData>().Save();
             NextScene();
         }
     }
